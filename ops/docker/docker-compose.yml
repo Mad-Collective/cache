@@ -1,0 +1,11 @@
+redis:
+    image: redis:3.0-alpine
+    expose:
+     - "6379"
+
+phpfarm:
+    build: phpfarm
+    volumes:
+      - ../../:/app/cache
+    links:
+      - redis

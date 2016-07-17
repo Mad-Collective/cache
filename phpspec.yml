@@ -1,0 +1,4 @@
+suites:
+    default:
+        namespace: Cmp\Cache
+        psr4_prefix: Cmp\Cache
