@@ -3,7 +3,6 @@
 namespace Cmp\Cache\Infrastructure;
 
 use Cmp\Cache\Domain\Cache;
-use Cmp\Cache\Domain\ExceptionsException;
 use Cmp\Cache\Domain\Exceptions\NotFoundException;
 use Redis;
 
