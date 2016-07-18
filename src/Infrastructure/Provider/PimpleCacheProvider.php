@@ -2,7 +2,6 @@
 
 namespace Cmp\Cache\Infrastructure\Provider;
 
-use Closure;
 use Cmp\Cache\Application\CacheFactory;
 use Cmp\Cache\Infrastructure\RedisCache;
 use InvalidArgumentException;
@@ -27,7 +26,7 @@ class PimpleCacheProvider implements ServiceProviderInterface
         $pimple['cache.backend'] = 'array';
         $pimple['cache.debug']   = false;
 
-        $pimple['cache'] = function () use ($pimple) {
+        $pimple['cache'] = function() use ($pimple) {
             $cache = $this->getCache($pimple['cache.backend']);
 
             if ($pimple['cache.debug']) {
