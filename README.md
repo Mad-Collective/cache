@@ -70,3 +70,45 @@ __*Note:*__ You can use the `CacheFactory` to easily build a cache object with o
 
 ### Test
 It allows to make assertions on the calls executed over a backend
+
+## Pimple service provider
+The library includes a service provider for Pimple ^3.0 (included on Silex ^2.0) to easily register a cache
+
+By default it will register an `ArrayCache` on the key `cache`
+```php
+$pimple->register(new PimpleCacheProvider(), $options);
+
+/** @var ArrayCache $cache */
+$cache = $pimple['cache'];
+```
+### Options 
+* **_cache.backend_**: accepted values are:
+  * `array`: It will create an ArrayCache (same as default)
+  * `redis`: An array where the value must be an existing `\Redis` connection or an array with the following configuration to built it:
+     * _host:_ 127.0.0.1 by default
+     * _port:_ 6379 by default
+     * _db:_ 0 by default
+     * _timeout:_ 0.0 by default  
+
+* **_cache.debug_**: a boolean, false by default. If is set to true, the cache will be wrapped in the `TestDecorator`
+
+__Examples:__
+```php
+// Redis from parameters
+$pimple->register(new PimpleCacheProvider(), ['cache.backend' => ['redis' => [
+    'host'    => '127.0.0.1', 
+    'port'    => 6379,
+    'db'      => 1,
+    'timeout' => 2.5,
+]]]);
+
+// Redis from an existing connection
+$redis = new \Redis();
+$pimple->register(new PimpleCacheProvider(), ['cache.backend' => ['redis' => $redis]]);
+
+// An ArrayCache wrapped with the TestDecorator
+$pimple->register(new PimpleCacheProvider(), [
+    'cache.backend' => 'array',
+    'cache.debug'   => true
+]);
+```

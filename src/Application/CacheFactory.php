@@ -23,14 +23,14 @@ class CacheFactory
     }
 
     /**
-     * @param       $host
-     * @param       $port
-     * @param int   $db
-     * @param float $timeOut
+     * @param string $host
+     * @param int    $port
+     * @param int    $db
+     * @param float  $timeOut
      *
      * @return RedisCache
      */
-    public static function redisFromParams($host, $port = 6379, $db = 0, $timeOut = 0.0)
+    public static function redisFromParams($host = '127.0.0.1', $port = 6379, $db = 0, $timeOut = 0.0)
     {
         $redis = new Redis();
         $redis->pconnect($host, $port, $timeOut);

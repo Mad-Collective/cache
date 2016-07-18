@@ -2,8 +2,15 @@
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cmp\Cache\Application\CacheFactory;
+use Cmp\Cache\Application\TestCacheDecorator;
+use Cmp\Cache\Infrastructure\ArrayCache;
+use Cmp\Cache\Infrastructure\Provider\PimpleCacheProvider;
 use Cmp\Cache\Infrastructure\RedisCache;
+use Pimple\Container;
 
+/**
+ * Class FeatureContext
+ */
 class FeatureContext implements SnippetAcceptingContext
 {
     /**
@@ -22,13 +29,19 @@ class FeatureContext implements SnippetAcceptingContext
     private $result;
 
     /**
+     * @var Container
+     */
+    private $pimple;
+
+    /**
      * FeatureContext constructor.
      */
     public function __construct()
     {
         $this->redis = new \Redis();
         $this->redis->connect($_SERVER['REDIS_HOST'], 6379);
-        $this->backend = new RedisCache($this->redis); 
+        $this->backend = new RedisCache($this->redis);
+        $this->theContainerIsEmpty(); 
     }
 
     /**
@@ -137,5 +150,88 @@ class FeatureContext implements SnippetAcceptingContext
     public function doNothing()
     {
 
+    }
+
+    /**
+     * @Given The container is empty
+     */
+    public function theContainerIsEmpty()
+    {
+        $this->pimple = new Container();
+    }
+
+    /**
+     * @When I pass the options to build the array access to the provider
+     */
+    public function iPassTheOptionsToBuildTheArrayAccessToTheProvider()
+    {
+        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => 'array']);
+    }
+
+    /**
+     * @When I register the provider without any option
+     */
+    public function iRegisterTheProviderWithoutAnyOption()
+    {
+        $this->pimple->register(new PimpleCacheProvider());
+    }
+
+    /**
+     * @When I pass the options to build the redis cache from parameters to the provider
+     */
+    public function iPassTheOptionsToBuildTheRedisCacheFromParametersToTheProvider()
+    {
+        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => ['redis' => [
+            'host'    => $_SERVER['REDIS_HOST'], 
+            'port'    => 6379,
+            'db'      => 2,
+            'timeout' => 0.5,
+        ]]]);
+    }
+
+    /**
+     * @When I pass the options to build the redis cache from an open connection to the provider
+     */
+    public function iPassTheOptionsToBuildTheRedisCacheFromAnOpenConnectionToTheProvider()
+    {
+        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => ['redis' => $this->redis]]);
+    }
+
+    /**
+     * @When I register the provider with the debug flag set to true
+     */
+    public function iRegisterTheProviderWithTheDebugFlagSetToTrue()
+    {
+        $this->pimple->register(new PimpleCacheProvider(), ['cache.debug' => true]);
+    }
+
+    /**
+     * @Then I should retrieve the test decorated cache
+     */
+    public function iShouldRetrieveTheTestDecoratedCache()
+    {
+        if (!$this->pimple['cache'] instanceof TestCacheDecorator) {
+            throw new RuntimeException("The cache has not been properly decorated");
+        }
+    }
+
+    /**
+     * @Then I should retrieve the redis cache object
+     */
+    public function iShouldRetrieveTheRedisCacheObject()
+    {
+        if (!$this->pimple['cache'] instanceof RedisCache) {
+            throw new RuntimeException("The redis cache has not been registered correctly");
+        }
+    }
+
+    /**
+     * @Then I should retrieve the array cache object
+     */
+    public function iShouldRetrieveTheArrayCacheObject()
+    {
+        if (!$this->pimple['cache'] instanceof ArrayCache) {
+            throw new RuntimeException("The array cache has not been registered correctly");
+        }
     }
 }
