@@ -16,6 +16,11 @@ use Redis;
  */
 class RedisCache implements Cache
 {
+    const DEFAULT_HOST    = '127.0.0.1';
+    const DEFAULT_PORT    = 6379;
+    const DEFAULT_DB      = 0;
+    const DEFAULT_TIMEOUT = 0.0;
+
     /**
      * @var Redis
      */

@@ -4,6 +4,7 @@ namespace Cmp\Cache\Infrastructure\Provider;
 
 use Closure;
 use Cmp\Cache\Application\CacheFactory;
+use Cmp\Cache\Infrastructure\RedisCache;
 use InvalidArgumentException;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -42,7 +43,7 @@ class PimpleCacheProvider implements ServiceProviderInterface
      *
      * @param $backend
      *
-     * @return Closure|\Cmp\Cache\Infrastructure\ArrayCache
+     * @return \Cmp\Cache\Domain\Cache
      */
     private function getCache($backend)
     {
@@ -62,7 +63,7 @@ class PimpleCacheProvider implements ServiceProviderInterface
      *
      * @param array|Redis $redis
      *
-     * @return Closure
+     * @return \Cmp\Cache\Domain\Cache
      */
     private function getRedis($redis)
     {
@@ -70,11 +71,23 @@ class PimpleCacheProvider implements ServiceProviderInterface
             return CacheFactory::redisCache($redis);
         }
 
-        $host    = isset($redis['host']) ? $redis['host'] : '127.0.0.1';
-        $port    = isset($redis['port']) ? $redis['port'] : 6379;
-        $db      = isset($redis['db']) ? $redis['db'] : 0;
-        $timeout = isset($redis['timeout']) ? $redis['timeout'] : 0.0;
+        $host    = $this->getParameter($redis, 'host', RedisCache::DEFAULT_HOST);
+        $port    = $this->getParameter($redis, 'port', RedisCache::DEFAULT_PORT);
+        $db      = $this->getParameter($redis, 'db', RedisCache::DEFAULT_DB);
+        $timeout = $this->getParameter($redis, 'timeout', RedisCache::DEFAULT_TIMEOUT);
 
         return CacheFactory::redisFromParams($host, $port, $db, $timeout);
+    }
+
+    /**
+     * @param array  $options
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    private function getParameter(array $options, $key, $default)
+    {
+        return isset($options[$key]) ? $options[$key] : $default;
     }
 }
