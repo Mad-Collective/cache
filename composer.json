@@ -8,7 +8,8 @@
     "require-dev": {
         "phpspec/phpspec": "^2.5",
         "behat/behat": "^3.1",
-        "silex/silex": "~2.0"
+        "silex/silex": "~2.0",
+        "ukko/phpredis-phpdoc": "dev-master"
     },
     "authors": [
         {

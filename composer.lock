@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "04ac037adeb927c76252920ac3e51fc0",
-    "content-hash": "661a67373de9891af078593f91db01b7",
+    "hash": "a2415ce79461d4f08bc528940366325f",
+    "content-hash": "b34bd76563cf67924d7ffc6ee9f58371",
     "packages": [],
     "packages-dev": [
         {
@@ -1841,6 +1841,55 @@
             "time": "2016-06-29 05:41:56"
         },
         {
+            "name": "ukko/phpredis-phpdoc",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ukko/phpredis-phpdoc.git",
+                "reference": "128152c917c6742023e832dbccbbd728004988ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ukko/phpredis-phpdoc/zipball/128152c917c6742023e832dbccbbd728004988ee",
+                "reference": "128152c917c6742023e832dbccbbd728004988ee",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "phpredis-phpdoc": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Max Kamashev",
+                    "email": "max.kamashev@gmail.com",
+                    "homepage": "http://uk0.us/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "@phpdoc extension phpredis for IDE autocomplete",
+            "homepage": "https://github.com/ukko/phpredis-phpdoc",
+            "keywords": [
+                "helper",
+                "phpredis",
+                "redis"
+            ],
+            "time": "2016-03-03 11:41:31"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.0.2",
             "source": {
@@ -1892,7 +1941,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ukko/phpredis-phpdoc": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
