@@ -63,7 +63,7 @@ class RedisCache implements Cache
     {
         $value = $this->client->get($key);
 
-        if (!$value && !$this->client->exists($key)) {
+        if (!$value) {
             throw new NotFoundException($key);
         }
 
