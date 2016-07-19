@@ -252,7 +252,7 @@ class FeatureContext implements SnippetAcceptingContext
             $this->pimple['cache'];
             throw new RuntimeException("The cache object should not be available");
         } catch (InvalidArgumentException $exception) {
-            
+            // Expected behaviour when an unknown backend is requested
         }
     }
 }
