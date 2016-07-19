@@ -11,9 +11,6 @@ matrix:
     - php: 7.0
       env:
         - REDIS_HOST=127.0.0.1
-    - hhvm:
-      env:
-        - REDIS_HOST=127.0.0.1
 
 services:
   - redis-server
