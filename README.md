@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/CMProductions/cache.svg?branch=master)](https://travis-ci.org/CMProductions/cache)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CMProductions/cache/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CMProductions/cache/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/CMProductions/cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/CMProductions/cache/?branch=master)
 
 ## TLDR;
 ```php

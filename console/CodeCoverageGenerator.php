@@ -13,8 +13,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CodeCoverageGenerator extends Command
 {
+    /**
+     * @var string
+     */
+    private $baseDir;
+
+    /**
+     * @var int
+     */
+    private $exitCode = 0;
+
     protected function configure()
     {
+        $this->baseDir = realpath(__DIR__.'/..').'/';
+
         $this
             ->setName('code-coverage:generate')
             ->setDescription('Generates a code coverage report');
@@ -30,39 +42,78 @@ class CodeCoverageGenerator extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filter = new PHP_CodeCoverage_Filter();
-        $filter->addDirectoryToBlacklist(realpath(__DIR__.'/../console'));
-        $filter->addDirectoryToBlacklist(realpath(__DIR__.'/../features'));
-        $filter->addDirectoryToBlacklist(realpath(__DIR__.'/../spec'));
-        $filter->addDirectoryToBlacklist(realpath(__DIR__.'/../vendor'));
-
-        $coverage = new PHP_CodeCoverage(null, $filter);
-
+        $coverage = new PHP_CodeCoverage(null, $this->getFilter());
         $coverage->start('<tests>');
+
+        $this->runPhpSpec();
+        $this->runBehat();
+
+        $coverage->stop();
+        $this->writeReport($coverage);
+
+        if ($this->exitCode !== 0) {
+            exit($this->exitCode);
+        }
+    }
+
+    /**
+     * Writes the clover report
+     * 
+     * @param PHP_CodeCoverage $coverage
+     */
+    private function writeReport(PHP_CodeCoverage $coverage)
+    {
+        $writer = new PHP_CodeCoverage_Report_Clover;
+        $writer->process($coverage, $this->getPath('clover.xml'));
+    }
+
+    /**
+     * Runs php spec unit tests
+     */
+    private function runPhpSpec()
+    {
         $input = new ArgvInput(['phpspec', 'run', '--format=pretty']);
         $app = new Application(null);
         $app->setAutoExit(false);
-        $exit = $app->run($input, new ConsoleOutput());
-        if ($exit !== 0) {
-            exit($exit);
-        }
 
+        $this->exitCode = $app->run($input, new ConsoleOutput());
+    }
+
+    /**
+     * Runs php spec unit tests
+     */
+    private function runBehat()
+    {
         define('BEHAT_BIN_PATH', realpath(__DIR__.'/../bin/behat'));
         $input = new ArgvInput(['behat']);
         $factory = new ApplicationFactory();
         $app = $factory->createApplication();
         $app->setAutoExit(false);
-        $exit = $app->run($input, new ConsoleOutput());
-        if ($exit !== 0) {
-            exit($exit);
-        }
 
-        $coverage->stop();
+        $this->exitCode += $app->run($input, new ConsoleOutput());
+    }
 
-        $writer = new PHP_CodeCoverage_Report_Clover;
-        $writer->process($coverage, realpath(__DIR__.'/..').'/clover.xml');
+    /**
+     * @return PHP_CodeCoverage_Filter
+     */
+    private function getFilter()
+    {
+        $filter = new PHP_CodeCoverage_Filter();
+        $filter->addDirectoryToBlacklist($this->getPath('console'));
+        $filter->addDirectoryToBlacklist($this->getPath('features'));
+        $filter->addDirectoryToBlacklist($this->getPath('spec'));
+        $filter->addDirectoryToBlacklist($this->getPath('vendor'));
 
-        $writer = new PHP_CodeCoverage_Report_HTML();
-        $writer->process($coverage, realpath(__DIR__.'/..').'/code-coverage');
+        return $filter;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    private function getPath($path)
+    {
+        return $this->baseDir.$path;
     }
 }
