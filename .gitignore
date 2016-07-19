@@ -1,2 +1,4 @@
 /vendor/
 /bin/*
+/code-coverage/
+clover.xml

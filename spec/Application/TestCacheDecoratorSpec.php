@@ -78,4 +78,18 @@ class TestCacheDecoratorSpec extends ObjectBehavior
         $this->hasBeenFlushed()->shouldBe(true);
         $decorated->flush()->shouldHaveBeenCalled(true);
     }
+
+    function it_can_return_all_the_calls()
+    {
+        $this->flush();
+
+        $this->getCalls()->shouldBe([
+            'delete' => [],
+            'set'    => [],
+            'has'    => [],
+            'get'    => [],
+            'demand' => [],
+            'flush'  => true,
+        ]);
+    }
 }

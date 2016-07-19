@@ -25,6 +25,7 @@ class ArrayCacheSpec extends ObjectBehavior
         $this->has('foo')->shouldReturn(false);
         $this->set('foo', 'bar');
         $this->has('foo')->shouldReturn(true);
+        $this->demand('foo')->shouldReturn('bar');
     }
 
     function it_can_store_items_for_a_limited_period_of_time()
@@ -34,6 +35,15 @@ class ArrayCacheSpec extends ObjectBehavior
 
         sleep(2);
         $this->shouldThrow(new ExpiredException('foo'))->duringDemand('foo');
+    }
+
+    function it_checking_an_expired_item_forces_a_delete()
+    {
+        $this->has('foo')->shouldReturn(false);
+        $this->set('foo', 'bar', 1);
+
+        sleep(2);
+        $this->has('foo')->shouldBe(false);
     }
 
     function it_throws_an_exception_when_trying_to_demand_a_non_set_item()

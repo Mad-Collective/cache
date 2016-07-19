@@ -234,4 +234,25 @@ class FeatureContext implements SnippetAcceptingContext
             throw new RuntimeException("The array cache has not been registered correctly");
         }
     }
+
+    /**
+     * @When I request an unknown backend cache instance to the factory
+     */
+    public function iRequestAnUnknownBackendCacheInstanceToTheFactory()
+    {
+        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => 'foo']);
+    }
+
+    /**
+     * @Then And exception should be thrown
+     */
+    public function andExceptionShouldBeThrown()
+    {
+        try {
+            $this->pimple['cache'];
+            throw new RuntimeException("The cache object should not be available");
+        } catch (InvalidArgumentException $exception) {
+            
+        }
+    }
 }

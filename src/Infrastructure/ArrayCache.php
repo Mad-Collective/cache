@@ -44,7 +44,9 @@ class ArrayCache implements Cache
         }
 
         if ($this->hasExpired($key)) {
-            return (bool) $this->delete($key);
+            $this->delete($key);
+
+            return false;
         }
 
         return true;
@@ -76,7 +78,7 @@ class ArrayCache implements Cache
             throw new ExpiredException($key);
         }
 
-        return true;
+        return $this->items[$key]['value'];
     }
 
     /**

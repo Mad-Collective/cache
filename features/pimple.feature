@@ -27,3 +27,8 @@ Feature: Easy access from the pimple container
     Given The container is empty
     When I register the provider with the debug flag set to true
     Then I should retrieve the test decorated cache
+
+  Scenario: The factory throws an exception if the backend is not supported
+    Given The container is empty
+    When I request an unknown backend cache instance to the factory
+    Then And exception should be thrown

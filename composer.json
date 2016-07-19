@@ -9,7 +9,8 @@
         "phpspec/phpspec": "^2.5",
         "behat/behat": "^3.1",
         "silex/silex": "~2.0",
-        "ukko/phpredis-phpdoc": "dev-master"
+        "ukko/phpredis-phpdoc": "dev-master",
+        "phpunit/php-code-coverage": "^2.2"
     },
     "authors": [
         {

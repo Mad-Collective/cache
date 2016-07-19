@@ -11,6 +11,9 @@ matrix:
     - php: 7.0
       env:
         - REDIS_HOST=127.0.0.1
+    - hhvm:
+      env:
+        - REDIS_HOST=127.0.0.1
 
 services:
   - redis-server
@@ -19,12 +22,12 @@ before_install:
   - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 before_script:
-  - phpenv config-rm xdebug.ini
   - composer selfupdate
 
 install:
   - composer install
 
 script:
-  - bin/phpspec run --format=pretty
-  - bin/behat
+  - php console/cache-console.php code-coverage:generate
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover clover.xml
