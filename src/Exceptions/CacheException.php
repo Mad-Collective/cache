@@ -1,13 +1,13 @@
 <?php
 
-namespace Cmp\Cache\Domain\Exceptions;
+namespace Cmp\Cache\Exceptions;
 
 use Exception;
 
 /**
  * Class CacheException
  *
- * @package Cmp\Cache\Domain\Exceptions
+ * @package Cmp\Cache\Exceptions
  */
 class CacheException extends Exception
 {

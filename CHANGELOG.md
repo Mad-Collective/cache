@@ -1,7 +1,16 @@
 # Change Log
 
+## [2.0.0](https://github.com/CMProductions/cache/tree/2.0.0) (2016-07-22)
+
+**Changes**
+
+- New cache namespace
+- New methods for do multiple operations at once: setItems, getItems, deleteItems
+- New build process using a builder
+- New chain cache
+- New logging decorator
+
 ## [1.1.0](https://github.com/CMProductions/cache/tree/1.1.0) (2016-07-18)
-[Full Changelog](https://github.com/skywinder/github-changelog-generator/compare/1.0.0...1.1.0)
 
 **Changes**
 

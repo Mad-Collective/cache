@@ -1,12 +1,7 @@
 <?php
 
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Cmp\Cache\Application\CacheFactory;
-use Cmp\Cache\Application\TestCacheDecorator;
-use Cmp\Cache\Infrastructure\ArrayCache;
-use Cmp\Cache\Infrastructure\Provider\PimpleCacheProvider;
-use Cmp\Cache\Infrastructure\RedisCache;
-use Pimple\Container;
+use Cmp\Cache\Backend\RedisCache;
 
 /**
  * Class FeatureContext
@@ -29,11 +24,6 @@ class FeatureContext implements SnippetAcceptingContext
     private $result;
 
     /**
-     * @var Container
-     */
-    private $pimple;
-
-    /**
      * FeatureContext constructor.
      */
     public function __construct()
@@ -41,21 +31,12 @@ class FeatureContext implements SnippetAcceptingContext
         $this->redis = new \Redis();
         $this->redis->connect($_SERVER['REDIS_HOST'], 6379);
         $this->backend = new RedisCache($this->redis);
-        $this->theContainerIsEmpty(); 
     }
 
     /**
      * @BeforeScenario
      */
     public function reset()
-    {
-        $this->redis->flushDB();
-    }
-
-    /**
-     * @Given The cache is empty
-     */
-    public function theCacheIsEmpty()
     {
         $this->redis->flushDB();
     }
@@ -88,7 +69,7 @@ class FeatureContext implements SnippetAcceptingContext
 
     /**
      * @param $timeToLive
-     * 
+     *
      * @Given I store a an item in the cache for :timeToLive second
      */
     public function iStoreAAnItemInTheCacheForSecond($timeToLive)
@@ -98,7 +79,7 @@ class FeatureContext implements SnippetAcceptingContext
 
     /**
      * @param $seconds
-     * 
+     *
      * @When I wait :seconds seconds
      */
     public function iWaitSeconds($seconds)
@@ -125,6 +106,35 @@ class FeatureContext implements SnippetAcceptingContext
     }
 
     /**
+     * @Given I store two items in the cache
+     */
+    public function iStoreTwoItemsInTheCache()
+    {
+        $this->backend->set('foo', 'bar');
+        $this->backend->set('bar', 'foo');
+    }
+
+    /**
+     * @When I delete the two items from the cache
+     */
+    public function iDeleteTheTwoItemsFromTheCache()
+    {
+        $this->backend->deleteItems(['foo', 'bar']);
+    }
+
+    /**
+     * @Then I should not be able to retrieve any of them
+     */
+    public function iShouldNotBeAbleToRetrieveAnyOfThem()
+    {
+        $items = $this->backend->getItems(['foo', 'bar']);
+
+        if ($items['foo'] !== null || $items['bar'] !== null) {
+            throw new RuntimeException("There should not be any item on the cache");
+        }
+    }
+
+    /**
      * @When I flush all the items item from the cache
      */
     public function iFlushAllTheItemsItemFromTheCache()
@@ -137,7 +147,10 @@ class FeatureContext implements SnippetAcceptingContext
      */
     public function iRequestANewRedisCacheInstanceToTheFactory()
     {
-        $redis = CacheFactory::redisFromParams($_SERVER['REDIS_HOST'], 6379, 1);
+        $redis = (new \Cmp\Cache\Factory\CacheBuilder())
+            ->withRedisCacheFromParams($_SERVER['REDIS_HOST'], 6379, 1)
+            ->build();
+
         if (!$redis instanceof RedisCache) {
             throw new RuntimeException("The factory could not create a RedisCache");
         }
@@ -150,109 +163,5 @@ class FeatureContext implements SnippetAcceptingContext
     public function doNothing()
     {
 
-    }
-
-    /**
-     * @Given The container is empty
-     */
-    public function theContainerIsEmpty()
-    {
-        $this->pimple = new Container();
-    }
-
-    /**
-     * @When I pass the options to build the array access to the provider
-     */
-    public function iPassTheOptionsToBuildTheArrayAccessToTheProvider()
-    {
-        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => 'array']);
-    }
-
-    /**
-     * @When I register the provider without any option
-     */
-    public function iRegisterTheProviderWithoutAnyOption()
-    {
-        $this->pimple->register(new PimpleCacheProvider());
-    }
-
-    /**
-     * @When I pass the options to build the redis cache from parameters to the provider
-     */
-    public function iPassTheOptionsToBuildTheRedisCacheFromParametersToTheProvider()
-    {
-        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => ['redis' => [
-            'host'    => $_SERVER['REDIS_HOST'], 
-            'port'    => 6379,
-            'db'      => 2,
-            'timeout' => 0.5,
-        ]]]);
-    }
-
-    /**
-     * @When I pass the options to build the redis cache from an open connection to the provider
-     */
-    public function iPassTheOptionsToBuildTheRedisCacheFromAnOpenConnectionToTheProvider()
-    {
-        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => ['redis' => $this->redis]]);
-    }
-
-    /**
-     * @When I register the provider with the debug flag set to true
-     */
-    public function iRegisterTheProviderWithTheDebugFlagSetToTrue()
-    {
-        $this->pimple->register(new PimpleCacheProvider(), ['cache.debug' => true]);
-    }
-
-    /**
-     * @Then I should retrieve the test decorated cache
-     */
-    public function iShouldRetrieveTheTestDecoratedCache()
-    {
-        if (!$this->pimple['cache'] instanceof TestCacheDecorator) {
-            throw new RuntimeException("The cache has not been properly decorated");
-        }
-    }
-
-    /**
-     * @Then I should retrieve the redis cache object
-     */
-    public function iShouldRetrieveTheRedisCacheObject()
-    {
-        if (!$this->pimple['cache'] instanceof RedisCache) {
-            throw new RuntimeException("The redis cache has not been registered correctly");
-        }
-    }
-
-    /**
-     * @Then I should retrieve the array cache object
-     */
-    public function iShouldRetrieveTheArrayCacheObject()
-    {
-        if (!$this->pimple['cache'] instanceof ArrayCache) {
-            throw new RuntimeException("The array cache has not been registered correctly");
-        }
-    }
-
-    /**
-     * @When I request an unknown backend cache instance to the factory
-     */
-    public function iRequestAnUnknownBackendCacheInstanceToTheFactory()
-    {
-        $this->pimple->register(new PimpleCacheProvider(), ['cache.backend' => 'foo']);
-    }
-
-    /**
-     * @Then And exception should be thrown
-     */
-    public function andExceptionShouldBeThrown()
-    {
-        try {
-            $this->pimple['cache'];
-            throw new RuntimeException("The cache object should not be available");
-        } catch (InvalidArgumentException $exception) {
-            // Expected behaviour when an unknown backend is requested
-        }
     }
 }

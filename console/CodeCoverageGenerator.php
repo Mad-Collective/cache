@@ -58,7 +58,7 @@ class CodeCoverageGenerator extends Command
 
     /**
      * Writes the clover report
-     * 
+     *
      * @param PHP_CodeCoverage $coverage
      */
     private function writeReport(PHP_CodeCoverage $coverage)

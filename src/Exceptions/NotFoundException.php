@@ -1,13 +1,13 @@
 <?php
 
-namespace Cmp\Cache\Domain\Exceptions;
+namespace Cmp\Cache\Exceptions;
 
 use Exception;
 
 /**
  * Class NotFoundException
  *
- * @package Cmp\Cache\Domain\Exceptions
+ * @package Cmp\Cache\Exceptions
  */
 class NotFoundException extends CacheException
 {
