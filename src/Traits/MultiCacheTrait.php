@@ -8,10 +8,25 @@ namespace Cmp\Cache\Traits;
  * Apply to a non multi cache backend to convert it
  *
  * @package Cmp\Cache
- * @mixin \Cmp\Cache\Traits
  */
 trait MultiCacheTrait
 {
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function set($key, $item, $timeToLive = null);
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function get($key, $default = null);
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function delete($key);
+
+    
     /**
      * {@inheritdoc}
      */

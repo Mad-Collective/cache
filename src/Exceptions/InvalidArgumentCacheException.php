@@ -25,7 +25,6 @@ class InvalidArgumentException extends CacheException
     {
         parent::__construct(
             "The given argument $argument is invalid. The expected was $expected, got ".gettype($value), 
-            static::CODE, 
             $previous
         );
     }

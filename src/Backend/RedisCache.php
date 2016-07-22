@@ -104,9 +104,12 @@ class RedisCache implements Cache
      */
     public function getItems(array $keys)
     {
-        return array_walk($this->client->mget($keys), function(&$value) {
+        $items = $this->client->mget($keys);
+        array_walk($items, function(&$value) {
             $value = $value === false ? null : $value;
         });
+
+        return $items;
     }
 
     /**
