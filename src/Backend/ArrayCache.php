@@ -135,12 +135,6 @@ class ArrayCache implements Cache
             return null;
         }
 
-        if ($this->hasExpired($key)) {
-            $this->delete($key);
-
-            return null;
-        }
-
         return !$this->items[$key]['expireTime'] ? null : $this->items[$key]['expireTime'] - time();
     }
 }
