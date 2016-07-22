@@ -91,7 +91,7 @@ class CacheBuilder
     }
 
     /**
-     * @return \Cmp\Cache\Backend\ArrayCache
+     * @return $this
      */
     public function withArrayCache()
     {
@@ -103,11 +103,23 @@ class CacheBuilder
     /**
      * @param Redis $redis
      *
-     * @return \Cmp\Cache\Backend\RedisCache
+     * @return $this
      */
     public function withRedis(Redis $redis)
     {
         $this->caches[] = $this->factory->redisCache($redis);
+
+        return $this;
+    }
+
+    /**
+     * @param Cache $cache
+     * 
+     * @return $this
+     */
+    public function withCache(Cache $cache)
+    {
+        $this->caches[] = $cache;
 
         return $this;
     }

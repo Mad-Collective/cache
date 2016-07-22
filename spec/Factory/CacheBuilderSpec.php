@@ -3,10 +3,10 @@
 namespace spec\Cmp\Cache\Factory;
 
 use Cmp\Cache\Backend\ArrayCache;
+use Cmp\Cache\Backend\ChainCache;
 use Cmp\Cache\Backend\RedisCache;
 use Cmp\Cache\Cache;
 use Cmp\Cache\Factory\CacheFactoryInterface;
-use Doctrine\Common\Cache\ChainCache;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -49,6 +49,7 @@ class CacheBuilderSpec extends ObjectBehavior
         CacheFactoryInterface $factory,
         ArrayCache $arrayCache,
         Redis $redis,
+        Cache $anotherCache,
         RedisCache $redisOne,
         RedisCache $redisTwo,
         ChainCache $chainCache
@@ -56,9 +57,10 @@ class CacheBuilderSpec extends ObjectBehavior
         $factory->arrayCache()->willReturn($arrayCache);
         $factory->redisCache($redis)->willReturn($redisOne);
         $factory->redisFromParams('host', 'port', 'db', 'timeout')->willReturn($redisTwo);
-        $factory->chainCache([$arrayCache, $redisOne, $redisTwo])->willReturn($chainCache);
+        $factory->chainCache([$arrayCache, $anotherCache, $redisOne, $redisTwo])->willReturn($chainCache);
 
         $this->withArrayCache()->shouldReturn($this);
+        $this->withCache($anotherCache)->shouldReturn($this);
         $this->withRedis($redis)->shouldReturn($this);
         $this->withRedisCacheFromParams('host', 'port', 'db', 'timeout')->shouldReturn($this);
 
