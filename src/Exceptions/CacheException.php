@@ -3,14 +3,13 @@
 namespace Cmp\Cache\Exceptions;
 
 use Exception;
-use Psr\Cache\CacheException as PsrCacheException;
 
 /**
  * Class CacheException
  *
  * @package Cmp\Cache\Exceptions
  */
-class CacheException extends Exception implements PsrCacheException
+class CacheException extends Exception
 {
     const CODE = 1000;
 

@@ -3,14 +3,13 @@
 namespace Cmp\Cache\Exceptions;
 
 use Exception;
-use Psr\Cache\InvalidArgumentException as PsrInvalidArgumentException;
 
 /**
  * Class CacheException
  *
  * @package Cmp\Cache\Exceptions
  */
-class InvalidArgumentException extends CacheException implements PsrInvalidArgumentException
+class InvalidArgumentException extends CacheException
 {
     const CODE = 1003;
 
