@@ -3,7 +3,8 @@
     "description": "A library to provide cache interface access to different backend caches",
     "type": "library",
     "require": {
-        "php": ">=5.5"
+        "php": ">=5.5",
+        "psr/log": "^1.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^2.5",
