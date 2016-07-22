@@ -55,7 +55,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function set($key, $value, $timeToLive = null)
     {
         return $this->call(
-            function () use ($key, $value, $timeToLive) {
+            function() use ($key, $value, $timeToLive) {
                 return $this->cache->set($key, $value, $timeToLive);
             },
             __METHOD__,
@@ -69,7 +69,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function has($key)
     {
         return $this->call(
-            function () use ($key) {
+            function() use ($key) {
                 return $this->cache->has($key);
             },
             __METHOD__,
@@ -83,7 +83,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function get($key, $default = null)
     {
         return $this->call(
-            function () use ($key, $default) {
+            function() use ($key, $default) {
                 return $this->cache->get($key, $default);
             },
             __METHOD__,
@@ -97,7 +97,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function demand($key)
     {
         return $this->call(
-            function () use ($key) {
+            function() use ($key) {
                 return $this->cache->demand($key);
             },
             __METHOD__,
@@ -111,7 +111,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function delete($key)
     {
         return $this->call(
-            function () use ($key) {
+            function() use ($key) {
                 return $this->cache->delete($key);
             },
             __METHOD__,
@@ -125,7 +125,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function flush()
     {
         return $this->call(
-            function () {
+            function() {
                 return $this->cache->flush();
             },
             __METHOD__
@@ -138,7 +138,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function setItems(array $items, $timeToLive = null)
     {
         return $this->call(
-            function () use ($items, $timeToLive) {
+            function() use ($items, $timeToLive) {
                 return $this->cache->setItems($items, $timeToLive);
             },
             __METHOD__,
@@ -152,7 +152,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function getItems(array $keys)
     {
         return $this->call(
-            function () use ($keys) {
+            function() use ($keys) {
                 return $this->cache->getItems($keys);
             },
             __METHOD__,
@@ -166,7 +166,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function deleteItems(array $keys)
     {
         return $this->call(
-            function () use ($keys) {
+            function() use ($keys) {
                 return $this->cache->deleteItems($keys);
             },
             __METHOD__,
@@ -184,7 +184,7 @@ class LoggerCache implements Cache, CacheDecorator
     public function getTimeToLive($key)
     {
         return $this->call(
-            function () use($key) {
+            function() use($key) {
                 return $this->cache->getTimeToLive($key);
             },
             __METHOD__

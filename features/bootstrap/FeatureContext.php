@@ -106,6 +106,35 @@ class FeatureContext implements SnippetAcceptingContext
     }
 
     /**
+     * @Given I store two items in the cache
+     */
+    public function iStoreTwoItemsInTheCache()
+    {
+        $this->backend->set('foo', 'bar');
+        $this->backend->set('bar', 'foo');
+    }
+
+    /**
+     * @When I delete the two items from the cache
+     */
+    public function iDeleteTheTwoItemsFromTheCache()
+    {
+        $this->backend->deleteItems(['foo', 'bar']);
+    }
+
+    /**
+     * @Then I should not be able to retrieve any of them
+     */
+    public function iShouldNotBeAbleToRetrieveAnyOfThem()
+    {
+        $items = $this->backend->getItems(['foo', 'bar']);
+
+        if ($items['foo'] !== null || $items['bar'] !== null) {
+            throw new RuntimeException("There should not be any item on the cache");
+        }
+    }
+
+    /**
      * @When I flush all the items item from the cache
      */
     public function iFlushAllTheItemsItemFromTheCache()

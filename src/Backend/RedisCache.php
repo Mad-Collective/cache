@@ -4,7 +4,6 @@ namespace Cmp\Cache\Backend;
 
 use Cmp\Cache\Cache;
 use Cmp\Cache\Exceptions\NotFoundException;
-use Cmp\Cache\TimeToLiveAwareCache;
 use Cmp\Cache\Traits\MultiCacheTrait;
 use Redis;
 
@@ -104,10 +103,12 @@ class RedisCache implements Cache
      */
     public function getItems(array $keys)
     {
-        $items = $this->client->mget($keys);
-        array_walk($items, function(&$value) {
-            $value = $value === false ? null : $value;
-        });
+        $items = [];
+
+        $values = $this->client->mget($keys);
+        foreach ($keys as $index => $key) {
+            $items[$key] = $values[$index] === false ? null : $values[$index];
+        }
 
         return $items;
     }
@@ -123,9 +124,9 @@ class RedisCache implements Cache
     /**
      * {@inheritdoc}
      */
-    public function deleteAll(array $keys)
+    public function deleteItems(array $keys)
     {
-        return (bool) call_user_func_array([$this->client, 'delete', $keys]);
+        return (bool) call_user_func_array([$this->client, 'delete'], $keys);
     }
 
     /**

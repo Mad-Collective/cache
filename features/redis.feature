@@ -20,6 +20,11 @@ Feature: Using redis as cache backend
     When I delete the item from the cache
     Then I should not be able to retrieve it
 
+  Scenario: Deleting multiple items from the cache
+    Given I store two items in the cache
+    When I delete the two items from the cache
+    Then I should not be able to retrieve any of them
+
   Scenario: Flushing the full cache
     Given I store a an item in the cache
     When I flush all the items item from the cache

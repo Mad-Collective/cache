@@ -65,7 +65,7 @@ class RedisCacheSpec extends ObjectBehavior
     {
         $redis->delete(['foo', 'bar'])->willReturn(true);
 
-        $this->delete(['foo','bar'])->shouldReturn(true);
+        $this->delete(['foo', 'bar'])->shouldReturn(true);
     }
 
     function it_can_check_the_existence_of_an_item_in_the_cache(Redis $redis)
@@ -96,6 +96,20 @@ class RedisCacheSpec extends ObjectBehavior
         $this->flush();
 
         $redis->flushDB()->shouldHaveBeenCalled();
+    }
+
+    function it_gets_multiple_items_from_cache(Redis $redis)
+    {
+        $redis->mget(['foo', 'bar'])->willReturn([0 => 1, 1 => false]);
+
+        $this->getItems(['foo', 'bar'])->shouldReturn(['foo' => 1, 'bar' => null]);
+    }
+
+    function it_deletes_multiple_items_from_cache(Redis $redis)
+    {
+        $redis->delete('foo', 'bar')->willReturn(2);
+
+        $this->deleteItems(['foo', 'bar'])->shouldReturn(true);
     }
 
     function it_can_get_the_time_to_live(Redis $redis)
