@@ -20,7 +20,7 @@ $cache->set('foo', 'bar');
 // Demand an item, throws an exception if not present
 $bar = $cache->demand('foo');
 
-// Get an item, if not present it will return the given default
+// Get an item, if not present in any cache it will return the given default
 $default = $cache->get('not found', 'default');
 
 // Delete an item
@@ -32,7 +32,7 @@ $cache->flush();
 
 ## The Cache interface
 
-The cache interface allows access to 6 methods:
+The cache interface allows access to 9 methods:
 * `set`
 * `setAll`
 * `has`
