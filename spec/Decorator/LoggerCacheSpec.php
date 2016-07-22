@@ -2,6 +2,7 @@
 
 namespace spec\Cmp\Cache\Decorator;
 
+use Cmp\Cache\Cache;
 use Cmp\Cache\Decorator\CacheDecorator;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
@@ -27,6 +28,12 @@ class LoggerCacheSpec extends ObjectBehavior
     {
         $this->shouldHaveType('\Cmp\Cache\Decorator\LoggerCache');
         $this->shouldHaveType('\Cmp\Cache\Cache');
+    }
+
+    function it_can_return_the_decorated_cache_correctly(Cache $cache)
+    {
+        $this->beConstructedWith($cache);
+        $this->getDecoratedCache()->shouldReturn($cache);
     }
 
     function it_can_get_the_inner_decorated_cache(CacheDecorator $anotherDecorator, CacheDecorator $decorated)
@@ -94,6 +101,13 @@ class LoggerCacheSpec extends ObjectBehavior
         $decorated->delete('foo')->willReturn(false);
 
         $this->delete('foo')->shouldReturn(false);
+    }
+
+    function it_delegates_delete_all_operations_correctly(CacheDecorator $decorated)
+    {
+        $decorated->deleteItems(['foo', 'bar'])->willReturn(true);
+
+        $this->deleteItems(['foo', 'bar'])->shouldReturn(true);
     }
 
     function it_delegates_flush_operations_correctly(CacheDecorator $decorated)

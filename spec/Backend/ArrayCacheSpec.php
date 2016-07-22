@@ -19,7 +19,7 @@ class ArrayCacheSpec extends ObjectBehavior
         $this->shouldHaveType('Cmp\Cache\Backend\ArrayCache');
         $this->shouldHaveType('Cmp\Cache\Cache');
     }
-    
+
     function it_can_store_items()
     {
         $this->has('foo')->shouldReturn(false);
@@ -98,5 +98,19 @@ class ArrayCacheSpec extends ObjectBehavior
     {
         $this->set('foo', 'bar', 10);
         $this->getTimeToLive('foo')->shouldBe(10);
+    }
+
+    function it_can_return_null_for_the_time_to_live_of_infinite_items()
+    {
+        $this->set('foo', 'bar');
+        $this->getTimeToLive('foo')->shouldBe(null);
+    }
+
+    function it_can_return_null_for_the_time_to_live_for_expired_items()
+    {
+        $this->set('foo', 'bar', 1);
+
+        sleep(2);
+        $this->getTimeToLive('foo')->shouldBe(null);
     }
 }
