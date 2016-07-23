@@ -37,8 +37,7 @@ class CacheServiceProviderSpec extends ObjectBehavior
         $container->offsetSet('cache', Argument::type('callable'))->shouldHaveBeenCalled();
         $container->offsetSet('cache.backends', ['array' => ['backend' => 'array']])->shouldHaveBeenCalled(); 
         $container->offsetSet('cache.exceptions', true)->shouldHaveBeenCalled(); 
-        $container->offsetSet('cache.logger', null)->shouldHaveBeenCalled(); 
-        $container->offsetSet('cache.log_level', LogLevel::ALERT)->shouldHaveBeenCalled();
+        $container->offsetSet('cache.logging', ['logger' => null, 'level' => LogLevel::ALERT])->shouldHaveBeenCalled();
     }
 
     function it_can_build_the_cache_with_defaults(
@@ -62,16 +61,16 @@ class CacheServiceProviderSpec extends ObjectBehavior
                 ['backend' => $backend->getWrappedObject()]
             ],
             'cache.exceptions' => false,
-            'cache.logging'    => ['logger' => $logger, 'level' => LogLevel::CRITICAL]
+            'cache.logging'    => ['logger' => $logger->getWrappedObject(), 'level' => LogLevel::CRITICAL]
         ]);
 
-        $builder->withArrayCache()->willReturn($builder);
-        $builder->withRedis($redisOne)->willReturn($builder);
-        $builder->withRedis($redisTwo)->willReturn($builder);
-        $builder->withRedisCacheFromParams('8.8.8.8', 1234, 1, 1.5)->willReturn($builder);
-        $builder->withCache($backend)->willReturn($builder);
-        $builder->withoutExceptions()->willReturn($builder);
-        $builder->withLogging($logger, LogLevel::CRITICAL)->willReturn($builder);
+        $builder->withArrayCache()->shouldBeCalled();
+        $builder->withRedis($redisOne)->shouldBeCalled();
+        $builder->withRedis($redisTwo)->shouldBeCalled();
+        $builder->withRedisCacheFromParams('8.8.8.8', 1234, 1, 1.5)->shouldBeCalled();
+        $builder->withCache($backend)->shouldBeCalled();
+        $builder->withoutExceptions()->shouldBeCalled();
+        $builder->withLogging($logger, LogLevel::CRITICAL)->shouldBeCalled();
         $builder->build()->willReturn('foo');
 
         assert($container['cache'] == 'foo');

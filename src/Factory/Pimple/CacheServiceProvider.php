@@ -41,9 +41,8 @@ class CacheServiceProvider implements ServiceProviderInterface
     public function register(Container $pimple)
     {
         $pimple['cache.backends']   = ['array' => ['backend' => 'array']];
+        $pimple['cache.logging']    = ['logger' => null, 'level' => LogLevel::ALERT];
         $pimple['cache.exceptions'] = true;
-        $pimple['cache.logger']     = null;
-        $pimple['cache.log_level']  = LogLevel::ALERT;
 
         $pimple['cache'] = function () use ($pimple) {
             return $this->build($pimple);
@@ -61,8 +60,8 @@ class CacheServiceProvider implements ServiceProviderInterface
             $this->builder->withoutExceptions();
         }
 
-        if ($pimple['cache.logger'] instanceof LoggerInterface) {
-            $this->builder->withLogging($pimple['cache.logger'], $pimple['cache.log_level']);
+        if ($pimple['cache.logging']['logger'] instanceof LoggerInterface) {
+            $this->builder->withLogging($pimple['cache.logging']['logger'], $pimple['cache.logging']['level']);
         }
 
         foreach ($pimple['cache.backends'] as $backend) {

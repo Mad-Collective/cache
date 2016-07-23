@@ -26,7 +26,7 @@ interface MultiCache
      *
      * @param array $keys
      *
-     * @return []
+     * @return array
      */
     public function getItems(array $keys);
 
