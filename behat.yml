@@ -1,3 +1,0 @@
-default:
-    autoload:
-        '': %paths.base%/features/bootstrap
