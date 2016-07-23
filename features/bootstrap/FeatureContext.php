@@ -8,6 +8,8 @@ use Cmp\Cache\Backend\RedisCache;
  */
 class FeatureContext implements SnippetAcceptingContext
 {
+    use ServiceProviderTrait;
+
     /**
      * @var \Redis
      */
@@ -31,6 +33,14 @@ class FeatureContext implements SnippetAcceptingContext
         $this->redis = new \Redis();
         $this->redis->connect($_SERVER['REDIS_HOST'], 6379);
         $this->backend = new RedisCache($this->redis);
+    }
+
+    /**
+     * @return Redis
+     */
+    protected function getRedis()
+    {
+        return $this->redis;
     }
 
     /**

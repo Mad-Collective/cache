@@ -90,3 +90,61 @@ The chain cache will accept one or more cache and tries all caches before failin
 ### Logger Cache
 It allows to log any exception thrown from the decorated cache. You can choose the silent mode to avoid throwing exceptions
 from the cache
+
+## Pimple service provider
+The library includes a service provider for Pimple ^3.0 (included on Silex ^2.0) to easily register a cache
+
+By default it will register an `ArrayCache` on the key `cache`
+```php
+$pimple->register(new CacheServiceProvider(), $options);
+
+/** @var ArrayCache $cache */
+$cache = $pimple['cache'];
+```
+### Options 
+* **_cache.backends_**: an array of backends caches to use, if more than 
+one is provided, the ChainCache will be used to wrap them all. Each backend option **must** have the key _backend_, the available options are: 
+  * `array`: It will create an ArrayCache (same as default)
+  * `redis`: If you already have a redis connection, it can be passed on the key _connection_ (if a string is used, the provider will try to get the service from the container.
+  If the _connection_ is not given, the provider will try to build a connection reading from the options array:
+     * _host:_ 127.0.0.1 by default
+     * _port:_ 6379 by default
+     * _db:_ 0 by default
+     * _timeout:_ 0.0 by default
+  * `string`: If a string is given, the provider will try to get the service from the container, the service must implement then `Cmp\Cache\Cache` interface
+  * `Cmp\Cache\Cache`: If an object implementing the Cache interface is given, it will be used directly
+
+* **_cache.exceptions_**: a boolean, true by default. If is set to true, the cache will be throw exceptions, if false, no exceptions will be thrown.
+* **_cache.logging_**: It allows to log exceptions thrown by the cache system. it accepts an array, with the following options:
+  * `logger`: And instance of an logger implementing the Psr\LoggerInterface
+  * `log_level`: The log level to use for logging the exceptions, 'alert' by default. Must be one of the valid levels defined at Psr\LogLevel
+
+__Examples:__
+```php
+// Redis from parameters
+$pimple->register(new PimpleCacheProvider(), ['cache.backends' => [
+    ['backend' => 'redis', 'host' => '127.0.0.1', 'port' => 6379, 'db' => 1, 'timeout' => 2.5]
+]]);
+
+// ArrayCache + Redis from existing connection
+$pimple->register(new PimpleCacheProvider(), ['cache.backends' => [
+    ['backend' => 'array']
+    ['backend' => 'redis', 'connection' => $redisConnection,]
+]]);
+
+// ArrayCache + Redis from a service registered in the container
+$pimple->register(new PimpleCacheProvider(), ['cache.backends' => [
+    ['backend' => 'array']
+    ['backend' => 'redis', 'connection' => 'redis.connection']
+]]);
+
+// Chain caches with logging and muted exceptions
+$pimple->register(new PimpleCacheProvider(), [
+    'cache.backends'   => [
+        ['backend' => 'array'],
+        ['backend' => 'custom_cache_service_key'],
+    ],
+    'cache.exceptions' => false,
+    'cache.logging'    => ['logger' => $psrLogger, 'log_level' => PsrLevel::CRITICAL],
+]);
+```
