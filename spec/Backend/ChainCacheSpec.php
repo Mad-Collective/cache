@@ -131,4 +131,9 @@ class ChainCacheSpec extends ObjectBehavior
         $this->getTimeToLive('foo')->shouldReturn(100);
         $this->getTimeToLive('bar')->shouldReturn(null);
     }
+
+    function it_can_get_the_caches_in_the_chain(Cache $cacheOne, Cache $cacheTwo)
+    {
+        $this->getCaches()->shouldReturn([$cacheOne, $cacheTwo]);
+    }
 }

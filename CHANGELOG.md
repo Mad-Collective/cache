@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.0](https://github.com/CMProductions/cache/tree/2.0.0) (2016-07-22)
+
+**Changes**
+
+- You can get the caches in a chain
+
 ## [2.0.0](https://github.com/CMProductions/cache/tree/2.0.0) (2016-07-22)
 
 **Changes**
