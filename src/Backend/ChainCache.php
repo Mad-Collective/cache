@@ -158,7 +158,7 @@ class ChainCache implements Cache
      */
     private function populatePreviousCaches($index, $key, $item, $timeToLive)
     {
-        for (--$index; $index >= 0 ; $index--) {
+        for (--$index; $index >= 0; $index--) {
             $this->caches[$index]->set($key, $item, $timeToLive);
         }
     }
