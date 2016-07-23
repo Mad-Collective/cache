@@ -45,11 +45,15 @@ class CacheServiceProviderSpec extends ObjectBehavior
         LoggerInterface $logger,
         \Redis $redisOne,
         \Redis $redisTwo,
-        Cache $backend
+        Cache $backend,
+        Cache $customBackend
     ) {
         $container = new Container();
         $container['redis.connection'] = function() use($redisOne) {
             return $redisOne->getWrappedObject(); 
+        };
+        $container['cache.custom_backend'] = function() use($customBackend) {
+            return $customBackend->getWrappedObject();
         };
 
         $container->register($this->getWrappedObject(), [
@@ -58,7 +62,8 @@ class CacheServiceProviderSpec extends ObjectBehavior
                 ['backend' => 'redis', 'connection' => 'redis.connection'], 
                 ['backend' => 'redis', 'connection' => $redisTwo->getWrappedObject()],
                 ['backend' => 'redis', 'host'       => '8.8.8.8', 'port' => 1234, 'db' => 1, 'timeout' => 1.5],
-                ['backend' => $backend->getWrappedObject()]
+                ['backend' => $backend->getWrappedObject()],
+                ['backend' => 'cache.custom_backend']
             ],
             'cache.exceptions' => false,
             'cache.logging'    => ['logger' => $logger->getWrappedObject(), 'level' => LogLevel::CRITICAL]
@@ -69,6 +74,7 @@ class CacheServiceProviderSpec extends ObjectBehavior
         $builder->withRedis($redisTwo)->shouldBeCalled();
         $builder->withRedisCacheFromParams('8.8.8.8', 1234, 1, 1.5)->shouldBeCalled();
         $builder->withCache($backend)->shouldBeCalled();
+        $builder->withCache($customBackend)->shouldBeCalled();
         $builder->withoutExceptions()->shouldBeCalled();
         $builder->withLogging($logger, LogLevel::CRITICAL)->shouldBeCalled();
         $builder->build()->willReturn('foo');
