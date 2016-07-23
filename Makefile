@@ -3,7 +3,7 @@ CONTAINER := phpfarm
 IMAGES ?= false
 APP_ROOT := /app/cache
 
-all: dev deps logs
+all: dev logs
 
 dev:
 	@docker-compose -p ${COMPONENT} -f ops/docker/docker-compose.yml up -d
@@ -20,11 +20,6 @@ nodev:
 ifeq ($(IMAGES),true)
 	@docker rmi ${COMPONENT}_${CONTAINER}
 endif
-
-deps: dependencies
-dependencies:
-	@docker exec -t $(shell docker-compose -p ${COMPONENT} -f ops/docker/docker-compose.yml ps -q ${CONTAINER}) \
-	 ${APP_ROOT}/ops/scripts/dependencies.sh
 
 test: unit integration
 unit:
