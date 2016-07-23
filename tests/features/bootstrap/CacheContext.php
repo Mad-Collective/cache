@@ -1,6 +1,6 @@
 <?php
 
-namespace test\Cmp\Cache;
+namespace features\Cmp\Cache;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cmp\Cache\Backend\RedisCache;
