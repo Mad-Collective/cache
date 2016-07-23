@@ -46,7 +46,7 @@ class CacheBuilder
      */
     public function __construct(CacheFactoryInterface $cacheFactory = null)
     {
-        $this->factory = $cacheFactory ? $cacheFactory : new CacheFactory();
+        $this->factory = $cacheFactory ?: new CacheFactory();
     }
 
     /**

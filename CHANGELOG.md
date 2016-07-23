@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.1.0](https://github.com/CMProductions/cache/tree/2.1.0) (2016-07-23)
+
+**Changes**
+
+- You can get the caches in a chain
+- Added cache service provider for pimple v3
+
 ## [2.0.0](https://github.com/CMProductions/cache/tree/2.0.0) (2016-07-22)
 
 **Changes**

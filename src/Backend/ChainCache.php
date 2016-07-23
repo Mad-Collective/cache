@@ -4,7 +4,6 @@ namespace Cmp\Cache\Backend;
 
 use Cmp\Cache\Cache;
 use Cmp\Cache\Exceptions\NotFoundException;
-use Cmp\Cache\TimeToLiveAwareCache;
 use Cmp\Cache\Traits\MultiCacheTrait;
 
 /**
@@ -23,7 +22,7 @@ class ChainCache implements Cache
      * 
      * @var Cache[]
      */
-    private $cache = [];
+    private $caches = [];
 
     /**
      * Pushes a cache in the chain
@@ -34,9 +33,19 @@ class ChainCache implements Cache
      */
     public function pushCache(Cache $cache)
     {
-        $this->cache[] = $cache;
+        $this->caches[] = $cache;
 
         return $this;
+    }
+
+    /**
+     * Returns the caches in the chain
+     * 
+     * @return \Cmp\Cache\Cache[]
+     */
+    public function getCaches()
+    {
+        return $this->caches;
     }
 
     /**
@@ -45,7 +54,7 @@ class ChainCache implements Cache
     public function set($key, $item, $timeToLive = null)
     {
         $success = true;
-        foreach ($this->cache as $cache) {
+        foreach ($this->caches as $cache) {
             $success = $success && $cache->set($key, $item, $timeToLive);
         }
 
@@ -57,7 +66,7 @@ class ChainCache implements Cache
      */
     public function has($key)
     {
-        foreach ($this->cache as $cache) {
+        foreach ($this->caches as $cache) {
             if ($cache->has($key)) {
                 return true;
             }
@@ -71,7 +80,7 @@ class ChainCache implements Cache
      */
     public function get($key, $default = null)
     {
-        foreach ($this->cache as $index => $cache) {
+        foreach ($this->caches as $index => $cache) {
             $item = $cache->get($key);
             if ($item) {
                 $this->populatePreviousCaches($index, $key, $item, $cache->getTimeToLive($key));
@@ -102,7 +111,7 @@ class ChainCache implements Cache
     public function delete($key)
     {
         $success = true;
-        foreach ($this->cache as $cache) {
+        foreach ($this->caches as $cache) {
             $success = $success && $cache->delete($key);
         }
 
@@ -115,7 +124,7 @@ class ChainCache implements Cache
     public function flush()
     {
         $success = true;
-        foreach ($this->cache as $cache) {
+        foreach ($this->caches as $cache) {
             $success = $success && $cache->flush();
         }
 
@@ -131,7 +140,7 @@ class ChainCache implements Cache
      */
     public function getTimeToLive($key)
     {
-        foreach ($this->cache as $cache) {
+        foreach ($this->caches as $cache) {
             $timeToLive = $cache->getTimeToLive($key);
             if ($timeToLive) {
                 return $timeToLive;
@@ -149,8 +158,8 @@ class ChainCache implements Cache
      */
     private function populatePreviousCaches($index, $key, $item, $timeToLive)
     {
-        for (--$index; $index >= 0 ; $index--) {
-            $this->cache[$index]->set($key, $item, $timeToLive);
+        for (--$index; $index >= 0; $index--) {
+            $this->caches[$index]->set($key, $item, $timeToLive);
         }
     }
 }
