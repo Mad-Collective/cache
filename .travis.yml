@@ -25,6 +25,6 @@ install:
   - composer install
 
 script:
-  - php console/cache-console.php code-coverage:generate
+  - bin/cache tests:run
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover clover.xml

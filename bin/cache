@@ -1,10 +1,11 @@
+#!/usr/bin/env php
 <?php
 
+use bin\Cmp\Cache\Commands\RunTests;
 use Symfony\Component\Console\Application;
 
 require_once realpath(__DIR__.'/../vendor/autoload.php');
-require_once realpath(__DIR__.'/CodeCoverageGenerator.php');
 
 $console = new Application();
-$console->add(new CodeCoverageGenerator());
+$console->add(new RunTests());
 $console->run();

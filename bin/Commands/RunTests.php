@@ -1,6 +1,11 @@
 <?php
 
+namespace bin\Cmp\Cache\Commands;
+
 use Behat\Behat\ApplicationFactory;
+use PHP_CodeCoverage;
+use PHP_CodeCoverage_Filter;
+use PHP_CodeCoverage_Report_Clover;
 use PhpSpec\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -9,9 +14,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class CodeCoverageGenerator
+ * Class RunTests
  */
-class CodeCoverageGenerator extends Command
+class RunTests extends Command
 {
     /**
      * @var string
@@ -28,8 +33,8 @@ class CodeCoverageGenerator extends Command
         $this->baseDir = realpath(__DIR__.'/..').'/';
 
         $this
-            ->setName('code-coverage:generate')
-            ->setDescription('Generates a code coverage report');
+            ->setName('tests:run')
+            ->setDescription('Runs the tests');
     }
 
     /**
@@ -63,7 +68,7 @@ class CodeCoverageGenerator extends Command
      */
     private function writeReport(PHP_CodeCoverage $coverage)
     {
-        $writer = new PHP_CodeCoverage_Report_Clover;
+        $writer = new PHP_CodeCoverage_Report_Clover();
         $writer->process($coverage, $this->getPath('clover.xml'));
     }
 
@@ -99,9 +104,7 @@ class CodeCoverageGenerator extends Command
     private function getFilter()
     {
         $filter = new PHP_CodeCoverage_Filter();
-        $filter->addDirectoryToBlacklist($this->getPath('console'));
-        $filter->addDirectoryToBlacklist($this->getPath('features'));
-        $filter->addDirectoryToBlacklist($this->getPath('spec'));
+        $filter->addDirectoryToBlacklist($this->getPath('test'));
         $filter->addDirectoryToBlacklist($this->getPath('vendor'));
 
         return $filter;
