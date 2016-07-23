@@ -1,0 +1,4 @@
+default:
+    suites:
+        default:
+            contexts: [test\Cmp\Cache\CacheContext]

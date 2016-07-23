@@ -1,6 +1,6 @@
 <?php
 
-namespace Cmp\Cache\Test;
+namespace test\Cmp\Cache;
 
 use Cmp\Cache\Backend\ArrayCache;
 use Cmp\Cache\Backend\ChainCache;

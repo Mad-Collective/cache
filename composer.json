@@ -24,7 +24,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Cmp\\Cache\\": "src/"
+            "Cmp\\Cache\\": "src/",
+            "test\\Cmp\\Cache\\": "features/bootstrap/"
         }
     }
 }

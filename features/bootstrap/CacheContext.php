@@ -1,14 +1,14 @@
 <?php
 
-namespace Cmp\Cache\Test;
+namespace test\Cmp\Cache;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cmp\Cache\Backend\RedisCache;
 
 /**
- * Class FeatureContext
+ * Class CacheContext
  */
-class FeatureContext implements SnippetAcceptingContext
+class CacheContext implements SnippetAcceptingContext
 {
     use ServiceProviderTrait;
 
