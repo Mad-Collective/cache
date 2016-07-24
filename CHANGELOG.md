@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.1](https://github.com/CMProductions/cache/tree/2.1.1) (2016-07-24)
+
+**Changes**
+
+- The builder always wraps the caches in the logger decorator, this ensures always cache types exceptions
+
 ## [2.1.0](https://github.com/CMProductions/cache/tree/2.1.0) (2016-07-23)
 
 **Changes**

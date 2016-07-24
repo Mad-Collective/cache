@@ -4,6 +4,9 @@ namespace features\Cmp\Cache;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cmp\Cache\Backend\RedisCache;
+use Cmp\Cache\Decorator\LoggerCache;
+use Cmp\Cache\Factory\CacheBuilder;
+use RuntimeException;
 
 /**
  * Class CacheContext
@@ -75,7 +78,7 @@ class CacheContext implements SnippetAcceptingContext
     public function iShouldGetTheSameItem()
     {
         if ($this->result !== 'bar') {
-            throw new \RuntimeException("The retrieve item is not the same");
+            throw new RuntimeException("The retrieve item is not the same");
         }
     }
 
@@ -105,7 +108,7 @@ class CacheContext implements SnippetAcceptingContext
     public function iShouldNotBeAbleToRetrieveIt()
     {
         if ($this->backend->has('foo')) {
-            throw new \RuntimeException("Redis still has the item stored");
+            throw new RuntimeException("Redis still has the item stored");
         }
     }
 
@@ -159,11 +162,11 @@ class CacheContext implements SnippetAcceptingContext
      */
     public function iRequestANewRedisCacheInstanceToTheFactory()
     {
-        $redis = (new \Cmp\Cache\Factory\CacheBuilder())
+        $redis = (new CacheBuilder())
             ->withRedisCacheFromParams($_SERVER['REDIS_HOST'], 6379, 1)
             ->build();
 
-        if (!$redis instanceof RedisCache) {
+        if (!$redis->getDecoratedCache() instanceof RedisCache) {
             throw new RuntimeException("The factory could not create a RedisCache");
         }
     }
@@ -174,6 +177,6 @@ class CacheContext implements SnippetAcceptingContext
      */
     public function doNothing()
     {
-
+        // no op
     }
 }

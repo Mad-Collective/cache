@@ -91,15 +91,20 @@ The chain cache will accept one or more cache and tries all caches before failin
 It allows to log any exception thrown from the decorated cache. You can choose the silent mode to avoid throwing exceptions
 from the cache
 
+**Note:** This decorator is used always when building a cache trough the builder, as it ensures that all exceptions thrown extend the base CacheException
+
 ## Pimple service provider
 The library includes a service provider for Pimple ^3.0 (included on Silex ^2.0) to easily register a cache
 
 By default it will register an `ArrayCache` on the key `cache`
 ```php
-$pimple->register(new CacheServiceProvider(), $options);
+$pimple->register(new CacheServiceProvider());
+
+/** @var LoggerCache $cache */
+$cache = $pimple['cache'];
 
 /** @var ArrayCache $cache */
-$cache = $pimple['cache'];
+$arrayCache = $pimple['cache']->getDecoratedCache();
 ```
 ### Options 
 * **_cache.backends_**: an array of backends caches to use, if more than 

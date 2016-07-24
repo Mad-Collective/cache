@@ -55,7 +55,8 @@ trait ServiceProviderTrait
      */
     public function iShouldGetAnArrayCache()
     {
-        assert($this->pimple['cache'] instanceof ArrayCache);
+        assert($this->pimple['cache'] instanceof LoggerCache);
+        assert($this->pimple['cache']->getDecoratedCache() instanceof ArrayCache);
     }
 
     /**
@@ -83,8 +84,9 @@ trait ServiceProviderTrait
      */
     public function iShouldGetAnChainCache()
     {
-        assert($this->pimple['cache'] instanceof ChainCache);
-        assert(count($this->pimple['cache']->getCaches()) == 5);
+        assert($this->pimple['cache'] instanceof LoggerCache);
+        assert($this->pimple['cache']->getDecoratedCache() instanceof ChainCache);
+        assert(count($this->pimple['cache']->getDecoratedCache()->getCaches()) == 5);
     }
 
     /**

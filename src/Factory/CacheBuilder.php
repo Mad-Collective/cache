@@ -148,10 +148,6 @@ class CacheBuilder
     {
         $cache = $this->buildCache();
 
-        if ($this->logger || !$this->withExceptions) {
-            $cache = $this->factory->loggerCache($cache, $this->withExceptions, $this->logger, $this->logLevel);
-        }
-
-        return $cache;
+        return $this->factory->loggerCache($cache, $this->withExceptions, $this->logger, $this->logLevel);
     }
 }
