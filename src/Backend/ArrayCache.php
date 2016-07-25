@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Backend;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Exceptions\CacheException;
 use Cmp\Cache\Exceptions\ExpiredException;
 use Cmp\Cache\Exceptions\NotFoundException;
@@ -17,7 +17,7 @@ use Cmp\Cache\Traits\MultiCacheTrait;
  *
  * @package Cmp\Cache\Infrastureture\Backend
  */
-class ArrayCache implements Cache
+class ArrayCache implements CacheInterface
 {
     use MultiCacheTrait;
 

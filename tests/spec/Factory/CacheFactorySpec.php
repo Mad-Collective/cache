@@ -2,7 +2,7 @@
 
 namespace spec\Cmp\Cache\Factory;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use PhpSpec\ObjectBehavior;
 use Redis;
 
@@ -24,13 +24,13 @@ class CacheFactorySpec extends ObjectBehavior
         $this->redisCache($redis)->shouldBeAnInstanceOf('\Cmp\Cache\Backend\RedisCache');
     }
 
-    function it_can_chain_caches(Cache $one, Cache $two)
+    function it_can_chain_caches(CacheInterface $one, CacheInterface $two)
     {
         $this->chainCache([$one, $two])->shouldBeAnInstanceOf('\Cmp\Cache\Backend\ChainCache');
     }
 
-    function it_can_decorate_a_cache_with_login(Cache $cache)
+    function it_can_decorate_a_cache_with_login(CacheInterface $cache)
     {
-        $this->loggerCache($cache)->shouldBeAnInstanceOf('\Cmp\Cache\Decorator\LoggerCache');
+        $this->LoggerCache($cache)->shouldBeAnInstanceOf('\Cmp\Cache\Decorator\LoggerCache');
     }
 }

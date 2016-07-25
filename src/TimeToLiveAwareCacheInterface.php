@@ -7,7 +7,7 @@ namespace Cmp\Cache;
  *
  * @package Cmp\Cache
  */
-interface TimeToLiveAwareCache
+interface TimeToLiveAwareCacheInterface
 {
     /**
      * Gets the remaining time to live for an item

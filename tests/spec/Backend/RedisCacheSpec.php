@@ -22,7 +22,7 @@ class RedisCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Cmp\Cache\Backend\RedisCache');
-        $this->shouldHaveType('Cmp\Cache\Cache');
+        $this->shouldHaveType('Cmp\Cache\CacheInterface');
     }
 
     function it_can_store_items(Redis $redis)

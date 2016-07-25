@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Factory;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Redis;
@@ -113,11 +113,11 @@ class CacheBuilder
     }
 
     /**
-     * @param Cache $cache
+     * @param CacheInterface $cache
      * 
      * @return $this
      */
-    public function withCache(Cache $cache)
+    public function withCache(CacheInterface $cache)
     {
         $this->caches[] = $cache;
 
@@ -125,7 +125,7 @@ class CacheBuilder
     }
 
     /**
-     * @return Cache
+     * @return CacheInterface
      */
     private function buildCache()
     {
@@ -142,12 +142,12 @@ class CacheBuilder
     }
 
     /**
-     * @return Cache
+     * @return CacheInterface
      */
     public function build()
     {
         $cache = $this->buildCache();
 
-        return $this->factory->loggerCache($cache, $this->withExceptions, $this->logger, $this->logLevel);
+        return $this->factory->LoggerCache($cache, $this->withExceptions, $this->logger, $this->logLevel);
     }
 }

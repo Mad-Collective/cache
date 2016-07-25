@@ -2,7 +2,7 @@
 
 namespace spec\Cmp\Cache\Backend;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
 
@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ChainCacheSpec extends ObjectBehavior
 {
-    function let(Cache $cacheOne, Cache $cacheTwo)
+    function let(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $this->pushCache($cacheOne)->pushCache($cacheTwo);
     } 
@@ -22,10 +22,10 @@ class ChainCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Cmp\Cache\Backend\ChainCache');
-        $this->shouldHaveType('Cmp\Cache\Cache');
+        $this->shouldHaveType('Cmp\Cache\CacheInterface');
     }
 
-    function it_executes_set_command_in_all_the_caches(Cache $cacheOne, Cache $cacheTwo)
+    function it_executes_set_command_in_all_the_caches(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->set('foo', 'bar', 123)->willReturn(true);
         $cacheTwo->set('foo', 'bar', 123)->willReturn(true);
@@ -33,7 +33,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->set('foo', 'bar', 123)->shouldReturn(true);
     }
 
-    function it_returns_false_if_a_cache_fails(Cache $cacheOne, Cache $cacheTwo)
+    function it_returns_false_if_a_cache_fails(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->set('foo', 'bar', 123)->willReturn(true);
         $cacheTwo->set('foo', 'bar', 123)->willReturn(false);
@@ -41,7 +41,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->set('foo', 'bar', 123)->shouldReturn(false);
     }
 
-    function it_does_not_ask_to_all_caches_if_one_has_the_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_does_not_ask_to_all_caches_if_one_has_the_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->has('foo')->willReturn(true);
 
@@ -50,7 +50,7 @@ class ChainCacheSpec extends ObjectBehavior
         $cacheTwo->set('foo')->shouldNotHaveBeenCalled();
     }
 
-    function it_tries_all_the_caches_before_failing_to_checking_for_an_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_tries_all_the_caches_before_failing_to_checking_for_an_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->has('foo')->willReturn(false);
         $cacheTwo->has('foo')->willReturn(false);
@@ -58,7 +58,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->has('foo')->shouldReturn(false);
     }
 
-    function it_does_not_ask_to_all_caches_if_one_get_the_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_does_not_ask_to_all_caches_if_one_get_the_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->get('foo')->willReturn('item');
         $cacheOne->getTimeToLive('foo')->willReturn(null);
@@ -68,7 +68,7 @@ class ChainCacheSpec extends ObjectBehavior
         $cacheTwo->get('foo')->shouldNotHaveBeenCalled();
     }
 
-    function it_populates_previous_caches_if_they_have_failed_to_get_the_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_populates_previous_caches_if_they_have_failed_to_get_the_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->get('foo')->willReturn(false);
         $cacheTwo->get('foo')->willReturn('item');
@@ -78,7 +78,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->get('foo')->shouldReturn('item');
     }
 
-    function it_tries_all_the_caches_before_failing_to_get_an_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_tries_all_the_caches_before_failing_to_get_an_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->get('foo')->willReturn(false);
         $cacheTwo->get('foo')->willReturn(false);
@@ -86,7 +86,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->get('foo', 'default')->shouldReturn('default');
     }
 
-    function it_can_demand_an_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_can_demand_an_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->get('foo')->willReturn(false);
         $cacheTwo->get('foo')->willReturn('bar');
@@ -96,7 +96,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->demand('foo')->shouldReturn('bar');
     }
 
-    function it_tries_all_the_caches_before_failing_to_demand_an_item(Cache $cacheOne, Cache $cacheTwo)
+    function it_tries_all_the_caches_before_failing_to_demand_an_item(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->get('foo')->willReturn(false);
         $cacheTwo->get('foo')->willReturn(false);
@@ -104,7 +104,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->shouldThrow(new NotFoundException('foo'))->duringDemand('foo');
     }
 
-    function it_deletes_the_item_in_all_caches(Cache $cacheOne, Cache $cacheTwo)
+    function it_deletes_the_item_in_all_caches(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->delete('foo')->willReturn(true);
         $cacheTwo->delete('foo')->willReturn(true);
@@ -112,7 +112,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->delete('foo')->shouldReturn(true);
     }
 
-    function it_flushes_all_caches(Cache $cacheOne, Cache $cacheTwo)
+    function it_flushes_all_caches(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->flush()->willReturn(true);
         $cacheTwo->flush()->willReturn(true);
@@ -120,7 +120,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->flush()->shouldReturn(true);
     }
 
-    function it_can_retrieve_the_time_to_live(Cache $cacheOne, Cache $cacheTwo)
+    function it_can_retrieve_the_time_to_live(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $cacheOne->getTimeToLive('foo')->willReturn(null);
         $cacheTwo->getTimeToLive('foo')->willReturn(100);
@@ -132,7 +132,7 @@ class ChainCacheSpec extends ObjectBehavior
         $this->getTimeToLive('bar')->shouldReturn(null);
     }
 
-    function it_can_get_the_caches_in_the_chain(Cache $cacheOne, Cache $cacheTwo)
+    function it_can_get_the_caches_in_the_chain(CacheInterface $cacheOne, CacheInterface $cacheTwo)
     {
         $this->getCaches()->shouldReturn([$cacheOne, $cacheTwo]);
     }

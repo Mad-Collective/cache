@@ -11,7 +11,11 @@
         "behat/behat": "^3.1",
         "silex/silex": "~2.0",
         "ukko/phpredis-phpdoc": "dev-master",
-        "phpunit/php-code-coverage": "^2.2"
+        "phpunit/php-code-coverage": "^2.2",
+        "ext-redis": "*"
+    },
+    "suggest": {
+        "ext-redis": "Allows use of redis as a caching implementation"
     },
     "authors": [
         {

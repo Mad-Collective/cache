@@ -10,7 +10,7 @@ use Cmp\Cache\Exceptions\NotFoundException;
  *
  * @package Cmp\Cache
  */
-interface SimpleCache
+interface SimpleCacheInterface
 {
     /**
      * Sets an item in the cache.

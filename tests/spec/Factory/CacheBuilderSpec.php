@@ -5,7 +5,7 @@ namespace spec\Cmp\Cache\Factory;
 use Cmp\Cache\Backend\ArrayCache;
 use Cmp\Cache\Backend\ChainCache;
 use Cmp\Cache\Backend\RedisCache;
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Decorator\LoggerCache;
 use Cmp\Cache\Factory\CacheFactoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -26,10 +26,10 @@ class CacheBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($factory);
     }
 
-    function it_can_build_a_silent_cache(CacheFactoryInterface $factory, Cache $cache, LoggerCache $loggerCache)
+    function it_can_build_a_silent_cache(CacheFactoryInterface $factory, CacheInterface $cache, LoggerCache $loggerCache)
     {
         $factory->arrayCache()->willReturn($cache);
-        $factory->loggerCache($cache, false, null, LogLevel::ALERT)->willReturn($loggerCache);
+        $factory->LoggerCache($cache, false, null, LogLevel::ALERT)->willReturn($loggerCache);
 
         $this->withoutExceptions()->shouldReturn($this);
 
@@ -38,12 +38,12 @@ class CacheBuilderSpec extends ObjectBehavior
 
     function it_can_build_a_cache_with_logging(
         CacheFactoryInterface $factory,
-        Cache $cache,
+        CacheInterface $cache,
         LoggerInterface $logger,
         LoggerCache $loggerCache
     ) {
         $factory->arrayCache()->willReturn($cache);
-        $factory->loggerCache($cache, true, $logger, LogLevel::WARNING)->willReturn($loggerCache);
+        $factory->LoggerCache($cache, true, $logger, LogLevel::WARNING)->willReturn($loggerCache);
 
         $this->withLogging($logger, LogLevel::WARNING)->shouldReturn($this);
 
@@ -54,7 +54,7 @@ class CacheBuilderSpec extends ObjectBehavior
         CacheFactoryInterface $factory,
         ArrayCache $arrayCache,
         Redis $redis,
-        Cache $anotherCache,
+        CacheInterface $anotherCache,
         RedisCache $redisOne,
         RedisCache $redisTwo,
         ChainCache $chainCache,
@@ -64,7 +64,7 @@ class CacheBuilderSpec extends ObjectBehavior
         $factory->redisCache($redis)->willReturn($redisOne);
         $factory->redisFromParams('host', 'port', 'db', 'timeout')->willReturn($redisTwo);
         $factory->chainCache([$arrayCache, $anotherCache, $redisOne, $redisTwo])->willReturn($chainCache);
-        $factory->loggerCache($chainCache, true, null, LogLevel::ALERT)->willReturn($loggerCache);
+        $factory->LoggerCache($chainCache, true, null, LogLevel::ALERT)->willReturn($loggerCache);
 
         $this->withArrayCache()->shouldReturn($this);
         $this->withCache($anotherCache)->shouldReturn($this);

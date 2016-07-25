@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Backend;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Exceptions\NotFoundException;
 use Cmp\Cache\Traits\MultiCacheTrait;
 use Redis;
@@ -14,7 +14,7 @@ use Redis;
  *
  * @package Cmp\Cache\Infrastureture\Backend
  */
-class RedisCache implements Cache
+class RedisCache implements CacheInterface
 {
     use MultiCacheTrait {
         MultiCacheTrait::setItems as setItemsTrait;

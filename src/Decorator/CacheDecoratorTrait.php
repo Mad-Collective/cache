@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Decorator;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 
 /**
  * Class CacheDecoratorTrait
@@ -12,12 +12,12 @@ use Cmp\Cache\Cache;
 trait CacheDecoratorTrait
 {
     /**
-     * @var Cache
+     * @var CacheInterface
      */
     private $cache;
 
     /**
-     * @return Cache
+     * @return CacheInterface
      */
     public function getDecoratedCache()
     {

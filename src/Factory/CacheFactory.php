@@ -5,7 +5,7 @@ namespace Cmp\Cache\Factory;
 use Cmp\Cache\Backend\ChainCache;
 use Cmp\Cache\Backend\ArrayCache;
 use Cmp\Cache\Backend\RedisCache;
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Decorator\LoggerCache;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -64,8 +64,8 @@ class CacheFactory implements CacheFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function loggerCache(
-        Cache $cache,
+    public function LoggerCache(
+        CacheInterface $cache,
         $withExceptions = true,
         LoggerInterface $logger = null,
         $logLevel = LogLevel::ERROR

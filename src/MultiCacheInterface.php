@@ -7,7 +7,7 @@ namespace Cmp\Cache;
  *
  * @package Cmp\Cache
  */
-interface MultiCache
+interface MultiCacheInterface
 {
     /**
      * Sets a list items in the cache.

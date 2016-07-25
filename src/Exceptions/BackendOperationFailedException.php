@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Exceptions;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Exception;
 
 /**
@@ -15,7 +15,7 @@ class BackendOperationFailedException extends CacheException
     const CODE = 1004;
 
     /**
-     * @var Cache
+     * @var CacheInterface
      */
     private $cache;
 
@@ -27,11 +27,11 @@ class BackendOperationFailedException extends CacheException
     /**
      * InvalidCacheOperationException constructor.
      *
-     * @param Cache          $cache
+     * @param CacheInterface $cache
      * @param string         $operation
      * @param Exception|null $previous
      */
-    public function __construct(Cache $cache, $operation, Exception $previous = null)
+    public function __construct(CacheInterface $cache, $operation, Exception $previous = null)
     {
         parent::__construct("Cache operation $operation failed for backend ".get_class($cache), $previous);
         $this->cache     = $cache;
