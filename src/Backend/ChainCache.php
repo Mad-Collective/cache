@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Backend;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Exceptions\NotFoundException;
 use Cmp\Cache\Traits\MultiCacheTrait;
 
@@ -13,25 +13,25 @@ use Cmp\Cache\Traits\MultiCacheTrait;
  *
  * @package Cmp\Cache\Infrastureture\Backend
  */
-class ChainCache implements Cache
+class ChainCache implements CacheInterface
 {
     use MultiCacheTrait;
 
     /**
      * Stored items
      * 
-     * @var Cache[]
+     * @var CacheInterface[]
      */
     private $caches = [];
 
     /**
      * Pushes a cache in the chain
      *
-     * @param Cache $cache
+     * @param CacheInterface $cache
      *
      * @return $this
      */
-    public function pushCache(Cache $cache)
+    public function pushCache(CacheInterface $cache)
     {
         $this->caches[] = $cache;
 
@@ -41,7 +41,7 @@ class ChainCache implements Cache
     /**
      * Returns the caches in the chain
      * 
-     * @return \Cmp\Cache\Cache[]
+     * @return \Cmp\Cache\CacheInterface[]
      */
     public function getCaches()
     {

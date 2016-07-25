@@ -3,7 +3,7 @@
 namespace Cmp\Cache\Factory\Pimple;
 
 use Cmp\Cache\Backend\RedisCache;
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Factory\CacheBuilder;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -52,7 +52,7 @@ class CacheServiceProvider implements ServiceProviderInterface
     /**
      * @param Container $pimple
      *
-     * @return Cache
+     * @return CacheInterface
      */
     private function build(Container $pimple)
     {
@@ -88,7 +88,7 @@ class CacheServiceProvider implements ServiceProviderInterface
             return $this->buildRedis($pimple, $options);
         }
 
-        if ($backend instanceof Cache) {
+        if ($backend instanceof CacheInterface) {
             return $this->builder->withCache($backend);
         }
 

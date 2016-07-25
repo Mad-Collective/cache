@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Decorator;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Exceptions\BackendOperationFailedException;
 use Cmp\Cache\Exceptions\CacheException;
 use Cmp\Cache\Traits\LoggerCacheTrait;
@@ -15,7 +15,7 @@ use Psr\Log\LogLevel;
  *
  * @package Cmp\Cache\Decorator
  */
-class LoggerCache implements Cache, CacheDecorator
+class LoggerCache implements CacheInterface, CacheDecorator
 {
     use CacheDecoratorTrait, LoggerCacheTrait;
 
@@ -32,13 +32,13 @@ class LoggerCache implements Cache, CacheDecorator
     /**
      * SilentCacheDecorator constructor.
      *
-     * @param Cache           $cache
+     * @param CacheInterface  $cache
      * @param bool            $withExceptions
      * @param LoggerInterface $logger
      * @param string          $logLevel
      */
     public function __construct(
-        Cache $cache,
+        CacheInterface $cache,
         $withExceptions = true,
         LoggerInterface $logger = null,
         $logLevel = LogLevel::ALERT

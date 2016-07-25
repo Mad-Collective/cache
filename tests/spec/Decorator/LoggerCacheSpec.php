@@ -2,7 +2,7 @@
 
 namespace spec\Cmp\Cache\Decorator;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Decorator\CacheDecorator;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
@@ -27,10 +27,10 @@ class LoggerCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('\Cmp\Cache\Decorator\LoggerCache');
-        $this->shouldHaveType('\Cmp\Cache\Cache');
+        $this->shouldHaveType('\Cmp\Cache\CacheInterface');
     }
 
-    function it_can_return_the_decorated_cache_correctly(Cache $cache)
+    function it_can_return_the_decorated_cache_correctly(CacheInterface $cache)
     {
         $this->beConstructedWith($cache);
         $this->getDecoratedCache()->shouldReturn($cache);

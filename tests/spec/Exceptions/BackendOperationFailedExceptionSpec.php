@@ -2,7 +2,7 @@
 
 namespace spec\Cmp\Cache\Exceptions;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,12 +13,12 @@ use PhpSpec\ObjectBehavior;
  */
 class BackendOperationFailedExceptionSpec extends ObjectBehavior
 {
-    function let(Cache $cache)
+    function let(CacheInterface $cache)
     {
         $this->beConstructedWith($cache, 'operation');
     }
 
-    function it_can_return_the_cache_that_failed(Cache $cache)
+    function it_can_return_the_cache_that_failed(CacheInterface $cache)
     {
         $this->getCache()->shouldReturn($cache);
     }

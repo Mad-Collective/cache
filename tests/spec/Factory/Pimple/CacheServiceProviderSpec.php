@@ -3,7 +3,7 @@
 namespace spec\Cmp\Cache\Factory\Pimple;
 
 use Cmp\Cache\Backend\RedisCache;
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Cmp\Cache\Factory\CacheBuilder;
 use PhpSpec\ObjectBehavior;
 use Pimple\Container;
@@ -45,8 +45,8 @@ class CacheServiceProviderSpec extends ObjectBehavior
         LoggerInterface $logger,
         \Redis $redisOne,
         \Redis $redisTwo,
-        Cache $backend,
-        Cache $customBackend
+        CacheInterface $backend,
+        CacheInterface $customBackend
     ) {
         $container = new Container();
         $container['redis.connection'] = function() use($redisOne) {

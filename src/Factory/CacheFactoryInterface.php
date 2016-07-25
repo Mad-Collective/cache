@@ -2,7 +2,7 @@
 
 namespace Cmp\Cache\Factory;
 
-use Cmp\Cache\Cache;
+use Cmp\Cache\CacheInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Redis;
@@ -54,15 +54,15 @@ interface CacheFactoryInterface
     /**
      * Decorates a cache with logging
      *
-     * @param Cache           $cache
+     * @param CacheInterface  $cache
      * @param bool            $withExceptions
      * @param LoggerInterface $logger
      * @param string          $logLevel
      *
      * @return \Cmp\Cache\Decorator\LoggerCache
      */
-    public function loggerCache(
-        Cache $cache,
+    public function LoggerCache(
+        CacheInterface $cache,
         $withExceptions = true,
         LoggerInterface $logger = null,
         $logLevel = LogLevel::ALERT
