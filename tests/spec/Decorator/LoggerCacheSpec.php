@@ -2,6 +2,7 @@
 
 namespace spec\Cmp\Cache\Decorator;
 
+use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Cache;
 use Cmp\Cache\Decorator\CacheDecorator;
 use Cmp\Cache\Exceptions\NotFoundException;
@@ -27,7 +28,7 @@ class LoggerCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('\Cmp\Cache\Decorator\LoggerCache');
-        $this->shouldHaveType('\Cmp\Cache\Cache');
+        $this->shouldHaveType('\Cmp\Cache\TagCache');
     }
 
     function it_can_return_the_decorated_cache_correctly(Cache $cache)
@@ -136,5 +137,10 @@ class LoggerCacheSpec extends ObjectBehavior
         $decorated->getTimeToLive('foo')->willReturn(false);
 
         $this->getTimeToLive('foo')->shouldReturn(false);
+    }
+
+    function it_can_create_taggable()
+    {
+        $this->tag('dummy')->shouldHaveType(TaggedCache::class);
     }
 }
