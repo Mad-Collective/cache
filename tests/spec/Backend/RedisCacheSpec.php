@@ -2,6 +2,7 @@
 
 namespace spec\Cmp\Cache\Backend;
 
+use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
 use Redis;
@@ -22,6 +23,7 @@ class RedisCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Cmp\Cache\Backend\RedisCache');
+        $this->shouldHaveType('Cmp\Cache\TagCache');
         $this->shouldHaveType('Cmp\Cache\Cache');
     }
 
@@ -121,5 +123,10 @@ class RedisCacheSpec extends ObjectBehavior
         $this->getTimeToLive('foo')->shouldReturn(null);
         $this->getTimeToLive('bar')->shouldReturn(null);
         $this->getTimeToLive('foobar')->shouldReturn(15);
+    }
+
+    function it_can_create_taggable()
+    {
+        $this->tag('dummy')->shouldHaveType(TaggedCache::class);
     }
 }

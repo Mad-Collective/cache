@@ -2,6 +2,7 @@
 
 namespace spec\Cmp\Cache\Backend;
 
+use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Exceptions\ExpiredException;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
@@ -17,6 +18,7 @@ class ArrayCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Cmp\Cache\Backend\ArrayCache');
+        $this->shouldHaveType('Cmp\Cache\TagCache');
         $this->shouldHaveType('Cmp\Cache\Cache');
     }
 
@@ -112,5 +114,10 @@ class ArrayCacheSpec extends ObjectBehavior
 
         sleep(2);
         $this->getTimeToLive('foo')->shouldBe(null);
+    }
+
+    function it_can_create_taggable()
+    {
+        $this->tag('dummy')->shouldHaveType(TaggedCache::class);
     }
 }
