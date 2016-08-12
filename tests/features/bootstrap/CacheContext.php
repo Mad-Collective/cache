@@ -4,6 +4,8 @@ namespace features\Cmp\Cache;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cmp\Cache\Backend\RedisCache;
+use Cmp\Cache\Backend\TaggedCache;
+use Cmp\Cache\Cache;
 use Cmp\Cache\Decorator\LoggerCache;
 use Cmp\Cache\Factory\CacheBuilder;
 use RuntimeException;
@@ -21,14 +23,29 @@ class CacheContext implements SnippetAcceptingContext
     private $redis;
 
     /**
-     * @var RedisCache
+     * @var Cache
      */
     private $backend;
+
+    /**
+     * @var Cache
+     */
+    private $discardedBackend;
 
     /**
      * @var string
      */
     private $result;
+
+    /**
+     * @var string
+     */
+    private $lastUsedKey;
+
+    /**
+     * @var mixed
+     */
+    private $lastUsedValue;
 
     /**
      * FeatureContext constructor.
@@ -41,7 +58,7 @@ class CacheContext implements SnippetAcceptingContext
     }
 
     /**
-     * @return Redis
+     * @return \Redis
      */
     protected function getRedis()
     {
@@ -57,11 +74,31 @@ class CacheContext implements SnippetAcceptingContext
     }
 
     /**
-     * @Given I store a an item in the cache
+     * @Given I store an item in the cache
      */
-    public function iStoreAAnItemInTheCache()
+    public function iStoreAnItemInTheCache()
     {
         $this->backend->set('foo', 'bar');
+        $this->lastUsedKey = 'foo';
+        $this->lastUsedValue = 'bar';
+    }
+
+    /**
+     * @Given I store an item with key :key and value :value in the cache
+     */
+    public function iStoreAnItemWithKeyAndValueInTheCache($key, $value)
+    {
+        $this->backend->set($key, $value);
+        $this->lastUsedKey = $key;
+        $this->lastUsedValue = $value;
+    }
+
+    /**
+     * @When I retrieve key :key
+     */
+    public function whenIRetrieveKey($key)
+    {
+        $this->result = $this->backend->get($key);
     }
 
     /**
@@ -69,7 +106,7 @@ class CacheContext implements SnippetAcceptingContext
      */
     public function whenIRetrieved()
     {
-        $this->result = $this->backend->demand('foo');
+        $this->result = $this->backend->demand($this->lastUsedKey);
     }
 
     /**
@@ -77,9 +114,27 @@ class CacheContext implements SnippetAcceptingContext
      */
     public function iShouldGetTheSameItem()
     {
-        if ($this->result !== 'bar') {
+        if ($this->result !== $this->lastUsedValue) {
             throw new RuntimeException("The retrieve item is not the same");
         }
+    }
+
+    /**
+     * @Then I should not get the same item
+     */
+    public function iShouldNotGetTheSameItem()
+    {
+        if ($this->result === $this->lastUsedValue) {
+            throw new RuntimeException("The retrieve item is not the same");
+        }
+    }
+
+    /**
+     * @Then I should get as value :value
+     */
+    public function iShouldGetAsValue($value)
+    {
+        assert($this->result == $value);
     }
 
     /**
@@ -90,6 +145,8 @@ class CacheContext implements SnippetAcceptingContext
     public function iStoreAAnItemInTheCacheForSecond($timeToLive)
     {
         $this->backend->set('foo', 'bar', $timeToLive);
+        $this->lastUsedKey = 'foo';
+        $this->lastUsedValue = 'bar';
     }
 
     /**
@@ -107,7 +164,7 @@ class CacheContext implements SnippetAcceptingContext
      */
     public function iShouldNotBeAbleToRetrieveIt()
     {
-        if ($this->backend->has('foo')) {
+        if ($this->backend->has($this->lastUsedKey)) {
             throw new RuntimeException("Redis still has the item stored");
         }
     }
@@ -117,7 +174,7 @@ class CacheContext implements SnippetAcceptingContext
      */
     public function iDeleteTheItemFromTheCache()
     {
-        $this->backend->delete('foo');
+        $this->backend->delete($this->lastUsedKey);
     }
 
     /**
@@ -150,9 +207,9 @@ class CacheContext implements SnippetAcceptingContext
     }
 
     /**
-     * @When I flush all the items item from the cache
+     * @When I flush all the items from the cache
      */
-    public function iFlushAllTheItemsItemFromTheCache()
+    public function iFlushAllTheItemsFromTheCache()
     {
         $this->backend->flush();
     }
@@ -178,5 +235,26 @@ class CacheContext implements SnippetAcceptingContext
     public function doNothing()
     {
         // no op
+    }
+
+    /**
+     * @When I create a tag
+     */
+    public function iCreateATag()
+    {
+        $this->discardedBackend = $this->backend;
+        $this->backend = $this->backend->tag('dummy');
+    }
+
+    /**
+     * @When I discard the tag
+     */
+    public function iDiscardTheTag()
+    {
+        if (!isset($this->discardedBackend)) {
+            throw new RuntimeException("No previous backend available");
+        }
+        $this->backend = $this->discardedBackend;
+        $this->discardedBackend = null;
     }
 }

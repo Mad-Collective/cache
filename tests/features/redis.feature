@@ -6,7 +6,7 @@ Feature: Using redis as cache backend
   Background: The cache is empty
   
   Scenario: Storing data in the cache
-    Given I store a an item in the cache
+    Given I store an item in the cache
     When I retrieve it
     Then I should get the same item
 
@@ -16,7 +16,7 @@ Feature: Using redis as cache backend
     Then I should not be able to retrieve it
 
   Scenario: Deleting an item from the cache
-    Given I store a an item in the cache
+    Given I store an item in the cache
     When I delete the item from the cache
     Then I should not be able to retrieve it
 
@@ -26,8 +26,8 @@ Feature: Using redis as cache backend
     Then I should not be able to retrieve any of them
 
   Scenario: Flushing the full cache
-    Given I store a an item in the cache
-    When I flush all the items item from the cache
+    Given I store an item in the cache
+    When I flush all the items from the cache
     Then I should not be able to retrieve it
 
   Scenario: The factory can create a redis connection
