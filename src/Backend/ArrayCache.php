@@ -17,7 +17,7 @@ use Cmp\Cache\Traits\MultiCacheTrait;
  *
  * @package Cmp\Cache\Infrastureture\Backend
  */
-class ArrayCache implements Cache
+class ArrayCache extends TaggableCache
 {
     use MultiCacheTrait;
 

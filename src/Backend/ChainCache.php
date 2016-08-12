@@ -13,7 +13,7 @@ use Cmp\Cache\Traits\MultiCacheTrait;
  *
  * @package Cmp\Cache\Infrastureture\Backend
  */
-class ChainCache implements Cache
+class ChainCache extends TaggableCache
 {
     use MultiCacheTrait;
 

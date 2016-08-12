@@ -2,6 +2,7 @@
 
 namespace spec\Cmp\Cache\Backend;
 
+use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Cache;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
@@ -22,6 +23,7 @@ class ChainCacheSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Cmp\Cache\Backend\ChainCache');
+        $this->shouldHaveType('Cmp\Cache\TagCache');
         $this->shouldHaveType('Cmp\Cache\Cache');
     }
 
@@ -135,5 +137,10 @@ class ChainCacheSpec extends ObjectBehavior
     function it_can_get_the_caches_in_the_chain(Cache $cacheOne, Cache $cacheTwo)
     {
         $this->getCaches()->shouldReturn([$cacheOne, $cacheTwo]);
+    }
+
+    function it_can_create_taggable()
+    {
+        $this->tag('dummy')->shouldHaveType(TaggedCache::class);
     }
 }

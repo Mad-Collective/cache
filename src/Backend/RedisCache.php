@@ -14,7 +14,7 @@ use Redis;
  *
  * @package Cmp\Cache\Infrastureture\Backend
  */
-class RedisCache implements Cache
+class RedisCache extends TaggableCache
 {
     use MultiCacheTrait {
         MultiCacheTrait::setItems as setItemsTrait;
@@ -126,7 +126,7 @@ class RedisCache implements Cache
      */
     public function deleteItems(array $keys)
     {
-        return (bool) call_user_func_array([$this->client, 'delete'], $keys);
+        return call_user_func_array([$this->client, 'delete'], $keys) > 0;
     }
 
     /**
