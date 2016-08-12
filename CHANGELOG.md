@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.2.0](https://github.com/CMProductions/cache/tree/2.2.0) (2016-08-12)
+
+**Changes**
+
+- Added the ability to use tags
+
 ## [2.1.1](https://github.com/CMProductions/cache/tree/2.1.1) (2016-07-24)
 
 **Changes**
