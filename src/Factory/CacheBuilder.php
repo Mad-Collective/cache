@@ -3,6 +3,7 @@
 namespace Cmp\Cache\Factory;
 
 use Cmp\Cache\Cache;
+use Cmp\Cache\Decorator\LoggerCache;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Redis;
@@ -142,7 +143,7 @@ class CacheBuilder
     }
 
     /**
-     * @return Cache
+     * @return LoggerCache
      */
     public function build()
     {

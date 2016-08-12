@@ -2,9 +2,11 @@
 
 namespace Cmp\Cache\Decorator;
 
+use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Cache;
 use Cmp\Cache\Exceptions\BackendOperationFailedException;
 use Cmp\Cache\Exceptions\CacheException;
+use Cmp\Cache\TagCache;
 use Cmp\Cache\Traits\LoggerCacheTrait;
 use Exception;
 use Psr\Log\LoggerInterface;
@@ -15,7 +17,7 @@ use Psr\Log\LogLevel;
  *
  * @package Cmp\Cache\Decorator
  */
-class LoggerCache implements Cache, CacheDecorator
+class LoggerCache implements TagCache, CacheDecorator
 {
     use CacheDecoratorTrait, LoggerCacheTrait;
 
@@ -189,6 +191,14 @@ class LoggerCache implements Cache, CacheDecorator
             },
             __METHOD__
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tag($tagName)
+    {
+        return new TaggedCache($this, $tagName);
     }
 
     /**

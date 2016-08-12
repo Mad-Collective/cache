@@ -28,11 +28,20 @@ $cache->delete('foo');
 
 // Empty the cache
 $cache->flush();
+
+//Create a tagged cache
+$taggedCache = $cache->tag('myTag');
+
+//Set a tagged item
+$taggedCache->set('key','value');
+
+//Remove all tagged items
+$taggedCache->flush();
 ```
 
 ## The Cache interface
 
-The cache interface allows access to 9 methods:
+The cache interface allows access to 10 methods:
 * `set`
 * `setAll`
 * `has`
@@ -42,6 +51,7 @@ The cache interface allows access to 9 methods:
 * `delete`
 * `deleteAll`
 * `flush`
+* `tag`
 
 ### Set
 Use it to store values in the cache. You can make an item expire after a certain time by passing 
@@ -73,6 +83,9 @@ Deletes multiple items at once
 ### Flush
 It empties the cache
 
+### Tag
+Creates a tagged cache instance. It works as a normal cache, but all the entries are put in a special bucket which you can flush.
+
 ## Cache backends provided
 These are the current backend implementations:
 * Redis
@@ -92,6 +105,30 @@ It allows to log any exception thrown from the decorated cache. You can choose t
 from the cache
 
 **Note:** This decorator is used always when building a cache trough the builder, as it ensures that all exceptions thrown extend the base CacheException
+
+
+## Tags
+It is possible to use tags for grouping related objects. All three provided backends have this ability. To use it just 
+request a new tagged cache instance using the tag() method, and then you'll be able to use it in the same way you use any other cache backend:
+```php
+// Store one photo in the cache
+$cache->set('photo.1', $photoOne);
+
+// Store a set of photos and tag them
+$cache->tag('photos')->set('photo.1', $taggedPhotoOne);
+$cache->tag('photos')->set('photo.2', $taggedPhotoTwo);
+
+// The photos are into different buckets
+$cache->has('photo.1');                // true 
+$cache->has('photo.2')                 // false
+$cache->tag('photos')->has('photo.1'); // true
+$cache->tag('photos')->has('photo.2')  // true
+
+// You can flush all items with the same tag at once
+$cache->tag('photos')->flush();
+$cache->has('photo.1');                // true 
+$cache->tag('photos')->has('photo.1'); // false
+```
 
 ## Pimple service provider
 The library includes a service provider for Pimple ^3.0 (included on Silex ^2.0) to easily register a cache

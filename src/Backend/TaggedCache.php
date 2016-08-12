@@ -84,7 +84,7 @@ class TaggedCache implements Cache
     public function get($key, $default = null)
     {
         $key = $this->getNamespacedKey($key);
-        return $this->store->get($key);
+        return $this->store->get($key, $default);
     }
 
     /**

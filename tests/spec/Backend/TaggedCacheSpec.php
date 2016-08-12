@@ -39,7 +39,7 @@ class TaggedCacheSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $store
-            ->get(Argument::containingString('sux'))
+            ->get(Argument::containingString('sux'), null)
             ->willReturn(false)
             ->shouldBeCalled();
 
@@ -110,11 +110,21 @@ class TaggedCacheSpec extends ObjectBehavior
     function it_gets_an_item(Cache $store)
     {
         $store
-            ->get("$this->uid:a")
+            ->get("$this->uid:a", null)
             ->willReturn('heyo!')
             ->shouldBeCalled();
 
         $this->get('a')->shouldBe('heyo!');
+    }
+
+    function it_gets_default_for_missing_item(Cache $store)
+    {
+        $store
+            ->get("$this->uid:a", false)
+            ->willReturn(false)
+            ->shouldBeCalled();
+
+        $this->get('a', false)->shouldBe(false);
     }
 
     function it_gets_multiple_items(Cache $store)
