@@ -2,6 +2,7 @@
 
 namespace spec\Cmp\Cache\Factory;
 
+use Cmp\Cache\Backend\NullCache;
 use Cmp\Cache\Cache;
 use PhpSpec\ObjectBehavior;
 use Redis;
@@ -17,6 +18,11 @@ class CacheFactorySpec extends ObjectBehavior
     function it_build_an_array_cache()
     {
         $this->arrayCache()->shouldBeAnInstanceOf('\Cmp\Cache\Backend\ArrayCache');
+    }
+
+    function it_can_build_a_null_cache()
+    {
+        $this->nullCache()->shouldBeAnInstanceOf(NullCache::class);
     }
 
     function it_can_build_a_redis_cache(Redis $redis)
