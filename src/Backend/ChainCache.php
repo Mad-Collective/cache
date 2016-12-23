@@ -55,7 +55,7 @@ class ChainCache extends TaggableCache
     {
         $success = true;
         foreach ($this->caches as $cache) {
-            $success = $success && $cache->set($key, $item, $timeToLive);
+            $success = $cache->set($key, $item, $timeToLive) && $success;
         }
 
         return $success;
@@ -112,7 +112,7 @@ class ChainCache extends TaggableCache
     {
         $success = true;
         foreach ($this->caches as $cache) {
-            $success = $success && $cache->delete($key);
+            $success = $cache->delete($key) && $success;
         }
 
         return $success;
@@ -125,7 +125,7 @@ class ChainCache extends TaggableCache
     {
         $success = true;
         foreach ($this->caches as $cache) {
-            $success = $success && $cache->flush();
+            $success = $cache->flush() && $success;
         }
 
         return $success;
