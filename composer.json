@@ -2,6 +2,7 @@
     "name": "pluggit/cache",
     "description": "A library to provide cache interface access to different backend caches",
     "type": "library",
+    "license": "MIT",
     "require": {
         "php": ">=5.5",
         "psr/log": "^1.0"
