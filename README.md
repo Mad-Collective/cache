@@ -4,6 +4,8 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CMProductions/cache/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CMProductions/cache/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/CMProductions/cache/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/CMProductions/cache/?branch=master)
 
+Provides an abstracion over most common user caches
+
 ## TLDR;
 ```php
 /** @var \Cmp\Cache\Cache $cache */
@@ -11,7 +13,7 @@ $cache = (new CacheBuilder)
   ->withLogging($psrLogger)
   ->withoutExceptions()
   ->withArrayCache()
-  ->withRedisFromParams($host, $port, $dbNumber)
+  ->withRedisCacheFromParams($host, $port, $dbNumber)
   ->build();
 
 // Set an item

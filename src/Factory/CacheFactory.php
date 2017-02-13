@@ -1,9 +1,9 @@
 <?php
-
 namespace Cmp\Cache\Factory;
 
 use Cmp\Cache\Backend\ChainCache;
 use Cmp\Cache\Backend\ArrayCache;
+use Cmp\Cache\Backend\NullCache;
 use Cmp\Cache\Backend\RedisCache;
 use Cmp\Cache\Cache;
 use Cmp\Cache\Decorator\LoggerCache;
@@ -26,6 +26,16 @@ class CacheFactory implements CacheFactoryInterface
     public function arrayCache()
     {
         return new ArrayCache();
+    }
+
+    /**
+     * Builds a null (noop) cache
+     *
+     * @return NullCache
+     */
+    public function nullCache()
+    {
+        return new NullCache();
     }
 
     /**
