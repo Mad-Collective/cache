@@ -156,7 +156,7 @@ class TaggedCache implements Cache
     {
         $pointerKey = "tag:$this->tag";
         $key = $this->store->get($pointerKey);
-        if ($key === null) {
+        if (!is_string($key)) {
             $key = str_replace('.', '', uniqid('', true));
             $this->store->set($pointerKey, $key);
         }
