@@ -78,7 +78,7 @@ class RunTests extends Command
     private function runPhpSpec()
     {
         $input = new ArgvInput(['phpspec', 'run', '--format=pretty']);
-        $app = new Application(null);
+        $app = new Application('UNKNOWN');
         $app->setAutoExit(false);
 
         $this->exitCode = $app->run($input, new ConsoleOutput());

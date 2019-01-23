@@ -2,4 +2,5 @@ suites:
     default:
         namespace: Cmp\Cache
         psr4_prefix: Cmp\Cache
-        spec_path: %paths.config%/tests
+        spec_path: tests
+        src_path: src

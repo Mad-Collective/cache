@@ -5,11 +5,13 @@ use Cmp\Cache\Backend\ChainCache;
 use Cmp\Cache\Backend\ArrayCache;
 use Cmp\Cache\Backend\NullCache;
 use Cmp\Cache\Backend\RedisCache;
+use Cmp\Cache\Backend\RedisClusterCache;
 use Cmp\Cache\Cache;
 use Cmp\Cache\Decorator\LoggerCache;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Redis;
+use RedisCluster;
 
 /**
  * Class CacheFactory
@@ -56,6 +58,14 @@ class CacheFactory implements CacheFactoryInterface
     public function redisCache(Redis $redis)
     {
         return new RedisCache($redis);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function redisClusterCache(RedisCluster $redis)
+    {
+        return new RedisClusterCache($redis);
     }
 
     /**

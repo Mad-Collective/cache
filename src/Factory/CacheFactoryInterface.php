@@ -6,6 +6,7 @@ use Cmp\Cache\Cache;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Redis;
+use RedisCluster;
 
 /**
  * Class CacheFactoryInterface
@@ -41,6 +42,15 @@ interface CacheFactoryInterface
      * @return \Cmp\Cache\Backend\RedisCache
      */
     public function redisCache(Redis $redis);
+
+    /**
+     * Builds a cache with redis as a backend
+     *
+     * @param RedisCluster $redis
+     *
+     * @return \Cmp\Cache\Backend\RedisClusterCache
+     */
+    public function redisClusterCache(RedisCluster $redis);
 
     /**
      * Builds a chain cache
