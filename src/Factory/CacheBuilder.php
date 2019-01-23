@@ -7,6 +7,7 @@ use Cmp\Cache\Decorator\LoggerCache;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Redis;
+use RedisCluster;
 
 /**
  * Class CacheFactory
@@ -109,6 +110,18 @@ class CacheBuilder
     public function withRedis(Redis $redis)
     {
         $this->caches[] = $this->factory->redisCache($redis);
+
+        return $this;
+    }
+
+    /**
+     * @param RedisCluster $redis
+     *
+     * @return $this
+     */
+    public function withRedisCluster(RedisCluster $redis)
+    {
+        $this->caches[] = $this->factory->redisClusterCache($redis);
 
         return $this;
     }

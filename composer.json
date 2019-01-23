@@ -9,7 +9,7 @@
         "psr/simple-cache": "^1.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "^2.5",
+        "phpspec/phpspec": "^5.1",
         "behat/behat": "^3.1",
         "silex/silex": "~2.0",
         "ukko/phpredis-phpdoc": "dev-master",

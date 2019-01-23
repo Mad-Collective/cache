@@ -5,7 +5,7 @@ function test {
   $PHP bin/phpspec run
 }
 
-for version in 5.6 7.0; do
+for version in 7.1 7.2; do
   echo "Testing PHP $version"
   test $version
 done

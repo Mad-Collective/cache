@@ -2,4 +2,4 @@ default:
     suites:
         default:
             contexts: [features\Cmp\Cache\CacheContext]
-            paths: [%paths.base%/tests/features]
+            paths: [tests/features]
