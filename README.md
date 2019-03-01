@@ -54,6 +54,8 @@ The cache interface allows access to 10 methods:
 * `deleteAll`
 * `flush`
 * `tag`
+* `appendList`
+* `increase`
 
 ### Set
 Use it to store values in the cache. You can make an item expire after a certain time by passing 
