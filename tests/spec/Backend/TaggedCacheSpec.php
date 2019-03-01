@@ -179,4 +179,20 @@ class TaggedCacheSpec extends ObjectBehavior
 
         $this->flush()->shouldBe(true);
     }
+
+    function it_can_append_elements_to_a_key(Cache $store)
+    {
+        $key = 'probeNonExistingList';
+        $value = 'probe';
+
+        $store->appendList("$this->uid:$key", $value)->willReturn(1)->shouldBeCalled();
+        $this->appendList($key, $value)->shouldBe(true);
+    }
+
+    function it_can_increment_value_of_a_key(Cache $store)
+    {
+        $key = 'foo';
+        $store->increment("$this->uid:$key")->willreturn(1)->shouldBeCalled();
+        $this->increment($key)->shouldBe(true);
+    }
 }

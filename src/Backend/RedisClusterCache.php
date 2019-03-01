@@ -122,6 +122,22 @@ class RedisClusterCache extends TaggableCache
     /**
      * {@inheritdoc}
      */
+    public function appendList($key, $value)
+    {
+        return (bool) $this->client->append($key, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($key)
+    {
+        return (bool) $this->client->incr($key);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function flush()
     {
         foreach ($this->client->_masters() as $master) {

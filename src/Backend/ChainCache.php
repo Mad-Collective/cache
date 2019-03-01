@@ -121,6 +121,32 @@ class ChainCache extends TaggableCache
     /**
      * {@inheritdoc}
      */
+    public function appendList($key, $value)
+    {
+        $success = true;
+        foreach ($this->caches as $cache) {
+            $success = $cache->appendList($key, $value)  && $success;;
+        }
+
+        return $success;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($key)
+    {
+        $success = true;
+        foreach ($this->caches as $cache) {
+            $success = $cache->increment($key)  && $success;;
+        }
+
+        return $success;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function flush()
     {
         $success = true;

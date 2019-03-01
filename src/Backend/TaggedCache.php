@@ -112,6 +112,24 @@ class TaggedCache implements Cache
     /**
      * {@inheritdoc}
      */
+    public function appendList($key, $value)
+    {
+        $key = $this->getNamespacedKey($key);
+        return (bool) $this->store->appendList($key, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($key)
+    {
+        $key = $this->getNamespacedKey($key);
+        return (bool) $this->store->increment($key);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function flush()
     {
         $pointerKey = "tag:$this->tag";

@@ -196,6 +196,33 @@ class LoggerCache implements TagCache, CacheDecorator
     /**
      * {@inheritdoc}
      */
+    public function appendList($key, $value)
+    {
+        return $this->call(
+            function() use ($key, $value) {
+                return $this->cache->set($key, $value);
+            },
+            __METHOD__,
+            [$key, $value]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($key)
+    {
+        return $this->call(
+            function() use($key) {
+                return $this->cache->increment($key);
+            },
+            __METHOD__
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function tag($tagName)
     {
         return new TaggedCache($this, $tagName);

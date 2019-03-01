@@ -71,4 +71,23 @@ interface SimpleCache
      * @return bool
      */
     public function flush();
+
+    /**
+     * Appends the value at the end of the list
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function appendList($key, $value);
+
+    /**
+     * Increments the number stored at key by one
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function increment($key);
 }

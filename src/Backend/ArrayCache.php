@@ -103,6 +103,34 @@ class ArrayCache extends TaggableCache
     /**
      * {@inheritdoc}
      */
+    public function appendList($key, $value)
+    {
+        if (!isset($this->items[$key])) {
+            $this->set($key,[$value]);
+            return false;
+        }
+
+        $this->items[$key]['value'][] = $value;
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($key)
+    {
+        if (!isset($this->items[$key])) {
+            $this->set($key,1);
+            return false;
+        }
+
+        $this->items[$key]['value']++;
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function flush()
     {
         $this->items = [];

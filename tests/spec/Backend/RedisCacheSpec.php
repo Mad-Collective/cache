@@ -129,4 +129,20 @@ class RedisCacheSpec extends ObjectBehavior
     {
         $this->tag('dummy')->shouldHaveType(TaggedCache::class);
     }
+
+    function it_can_append_elements_to_a_key(Redis $redis)
+    {
+        $key = 'probeNonExistingList';
+        $value = 'probe';
+
+        $redis->append($key, $value)->willReturn(1);
+        $this->appendList($key, $value)->shouldReturn(true);
+    }
+
+    function it_can_increment_value_of_a_key(Redis $redis)
+    {
+        $key = 'foo';
+        $redis->incr($key)->willreturn(1);
+        $this->increment($key)->shouldReturn(true);
+    }
 }

@@ -55,4 +55,14 @@ class NullCacheSpec extends ObjectBehavior
     {
         $this->getTimeToLive('foo')->shouldReturn(null);
     }
+
+    function it_can_append_elements_to_a_key()
+    {
+        $this->appendList('foo', 'bar')->shouldReturn(true);
+    }
+
+    function it_can_increment_value_of_a_key()
+    {
+        $this->increment('foo')->shouldReturn(true);
+    }
 }

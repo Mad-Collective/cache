@@ -143,4 +143,18 @@ class ChainCacheSpec extends ObjectBehavior
     {
         $this->tag('dummy')->shouldHaveType(TaggedCache::class);
     }
+
+    function it_can_append_elements_to_a_key(Cache $cacheOne, Cache $cacheTwo)
+    {
+        $cacheOne->appendList('foo', 'bar')->willReturn(1);
+        $cacheTwo->appendList('foo', 'bar')->willReturn(1);
+        $this->appendList('foo', 'bar')->shouldBe(true);
+    }
+
+    function it_can_increment_value_of_a_key(Cache $cacheOne, Cache $cacheTwo)
+    {
+        $cacheOne->increment('foo')->willReturn(1);
+        $cacheTwo->increment('foo')->willReturn(1);
+        $this->increment('foo')->shouldReturn(true);
+    }
 }

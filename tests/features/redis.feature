@@ -25,6 +25,19 @@ Feature: Using redis as cache backend
     When I delete the two items from the cache
     Then I should not be able to retrieve any of them
 
+  Scenario: Append values to a key
+    Given I append to key foo the value 'bar,'
+    And   I append to key foo the value 'bar,'
+    And   I append to key foo the value 'bar2,'
+    When  I retrieve key foo
+    Then  I should get as value 'bar,bar,bar2,'
+
+  Scenario: Increase a value
+    Given I increase the value of bar
+    And   I increase the value of bar
+    When  I retrieve key bar
+    Then  I should get as value 2
+
   Scenario: Flushing the full cache
     Given I store an item in the cache
     When I flush all the items from the cache

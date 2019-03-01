@@ -68,6 +68,22 @@ class NullCache extends TaggableCache
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function appendList($key, $value)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function increment($key)
+    {
+        return true;
+    }
+
+    /**
      * Empties the cache
      *
      * @return bool

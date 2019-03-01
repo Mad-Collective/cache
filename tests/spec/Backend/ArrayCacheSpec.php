@@ -6,6 +6,7 @@ use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Exceptions\ExpiredException;
 use Cmp\Cache\Exceptions\NotFoundException;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
 /**
  * Class ArrayCacheSpec
@@ -119,5 +120,19 @@ class ArrayCacheSpec extends ObjectBehavior
     function it_can_create_taggable()
     {
         $this->tag('dummy')->shouldHaveType(TaggedCache::class);
+    }
+
+    function it_can_append_elements_to_a_key()
+    {
+        $this->appendList('foo', 'bar')->shouldBe(false);
+        $this->appendList('foo', 'bar2')->shouldBe(true);
+        Assert::eq($this->get('foo')->getWrappedObject(),['bar','bar2']);
+    }
+
+    function it_can_increment_value_of_a_key()
+    {
+        $this->increment('foo')->shouldReturn(false);
+        $this->increment('foo')->shouldReturn(true);
+        Assert::eq($this->get('foo')->getWrappedObject(),2);
     }
 }

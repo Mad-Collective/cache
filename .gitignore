@@ -3,3 +3,4 @@
 /bin/phpspec
 /code-coverage/
 clover.xml
+.idea

@@ -257,4 +257,20 @@ class CacheContext implements SnippetAcceptingContext
         $this->backend = $this->discardedBackend;
         $this->discardedBackend = null;
     }
+
+    /**
+     * @Given I append to key :key the value :value
+     */
+    public function iAppendToKeyTheValue($key,$value)
+    {
+        $this->backend->appendList($key, $value);
+    }
+
+    /**
+     * @Given I increase the value of :key
+     */
+    public function iIncreaseTheValueOf($key)
+    {
+        $this->backend->increment($key);
+    }
 }
