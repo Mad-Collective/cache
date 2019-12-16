@@ -58,14 +58,14 @@ class RedisCacheSpec extends ObjectBehavior
 
     function it_delete_an_item(Redis $redis)
     {
-        $redis->delete('foo')->willReturn(true);
+        $redis->del('foo')->willReturn(true);
 
         $this->delete('foo')->shouldReturn(true);
     }
 
     function it_delete_multiple_items_at_once(Redis $redis)
     {
-        $redis->delete(['foo', 'bar'])->willReturn(true);
+        $redis->del(['foo', 'bar'])->willReturn(true);
 
         $this->delete(['foo', 'bar'])->shouldReturn(true);
     }
@@ -109,7 +109,7 @@ class RedisCacheSpec extends ObjectBehavior
 
     function it_deletes_multiple_items_from_cache(Redis $redis)
     {
-        $redis->delete('foo', 'bar')->willReturn(2);
+        $redis->del('foo', 'bar')->willReturn(2);
 
         $this->deleteItems(['foo', 'bar'])->shouldReturn(true);
     }
