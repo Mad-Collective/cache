@@ -9,7 +9,7 @@ use Redis;
 
 /**
  * Class RedisCache
- * 
+ *
  * A redis powered backend for caching
  *
  * @package Cmp\Cache\Infrastureture\Backend
@@ -118,7 +118,7 @@ class RedisCache extends TaggableCache
      */
     public function delete($key)
     {
-        return (bool) $this->client->delete($key);
+        return (bool) $this->client->del($key);
     }
 
     /**
@@ -126,7 +126,7 @@ class RedisCache extends TaggableCache
      */
     public function deleteItems(array $keys)
     {
-        return call_user_func_array([$this->client, 'delete'], $keys) > 0;
+        return call_user_func_array([$this->client, 'del'], $keys) > 0;
     }
 
     /**
@@ -160,6 +160,6 @@ class RedisCache extends TaggableCache
     {
         $timeToLive = $this->client->ttl($key);
 
-        return false === $timeToLive || $timeToLive <= 0 ? null : $timeToLive; 
+        return false === $timeToLive || $timeToLive <= 0 ? null : $timeToLive;
     }
 }
