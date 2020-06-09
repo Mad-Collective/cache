@@ -174,6 +174,9 @@ class TaggedCacheSpec extends ObjectBehavior
             ->delete($this->tagKey)
             ->willReturn(true)
             ->shouldBeCalled();
+        $store
+            ->deleteByPrefix($this->uid)
+            ->shouldBeCalled();
 
         $store->flush()->shouldNotBeCalled();
 

@@ -229,6 +229,19 @@ class LoggerCache implements TagCache, CacheDecorator
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function deleteByPrefix($prefix)
+    {
+        return $this->call(
+            function() use($prefix) {
+                return $this->cache->deleteByPrefix($prefix);
+            },
+            __METHOD__
+        );
+    }
+
+    /**
      * @param callable $callable
      *
      * @param string   $method

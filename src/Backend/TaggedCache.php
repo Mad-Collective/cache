@@ -133,6 +133,8 @@ class TaggedCache implements Cache
     public function flush()
     {
         $pointerKey = "tag:$this->tag";
+        $this->deleteByPrefix($this->getTagKey());
+
         return $this->store->delete($pointerKey);
     }
 
@@ -143,6 +145,15 @@ class TaggedCache implements Cache
     {
         $key = $this->getNamespacedKey($key);
         return $this->store->getTimeToLive($key);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByPrefix($prefix)
+    {
+        $prefix = $this->getTagKey();
+        $this->store->deleteByPrefix($prefix);
     }
 
     /**

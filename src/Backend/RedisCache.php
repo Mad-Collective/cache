@@ -2,7 +2,6 @@
 
 namespace Cmp\Cache\Backend;
 
-use Cmp\Cache\Cache;
 use Cmp\Cache\Exceptions\NotFoundException;
 use Cmp\Cache\Traits\MultiCacheTrait;
 use Redis;
@@ -118,7 +117,7 @@ class RedisCache extends TaggableCache
      */
     public function delete($key)
     {
-        return (bool) $this->client->delete($key);
+        return (bool) $this->client->del($key);
     }
 
     /**
@@ -126,7 +125,7 @@ class RedisCache extends TaggableCache
      */
     public function deleteItems(array $keys)
     {
-        return call_user_func_array([$this->client, 'delete'], $keys) > 0;
+        return call_user_func_array([$this->client, 'del'], $keys) > 0;
     }
 
     /**
@@ -161,5 +160,18 @@ class RedisCache extends TaggableCache
         $timeToLive = $this->client->ttl($key);
 
         return false === $timeToLive || $timeToLive <= 0 ? null : $timeToLive; 
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByPrefix($prefix)
+    {
+        $iterator = null;
+        while ($keys = $this->client->scan($iterator, $prefix.'*') ) {
+            foreach ($keys as $key) {
+                $this->client->del($key);
+            }
+        }
     }
 }

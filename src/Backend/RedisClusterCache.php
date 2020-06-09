@@ -154,4 +154,17 @@ class RedisClusterCache extends TaggableCache
 
         return false === $timeToLive || $timeToLive <= 0 ? null : $timeToLive;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByPrefix($prefix)
+    {
+        $iterator = null;
+        while ($keys = $this->client->scan($iterator, $prefix.'*') ) {
+            foreach ($keys as $key) {
+                $this->client->del($key);
+            }
+        }
+    }
 }

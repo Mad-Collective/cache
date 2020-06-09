@@ -4,9 +4,7 @@ namespace features\Cmp\Cache;
 
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Cmp\Cache\Backend\RedisCache;
-use Cmp\Cache\Backend\TaggedCache;
 use Cmp\Cache\Cache;
-use Cmp\Cache\Decorator\LoggerCache;
 use Cmp\Cache\Factory\CacheBuilder;
 use RuntimeException;
 
@@ -55,6 +53,18 @@ class CacheContext implements SnippetAcceptingContext
         $this->redis = new \Redis();
         $this->redis->connect($_SERVER['REDIS_HOST'], 6379);
         $this->backend = new RedisCache($this->redis);
+    }
+
+    /**
+     * @Given /^redis should contain (\d+) item(s)?$/
+     */
+    public function redisShouldContainItem($expectedCount)
+    {
+        $count = count($this->redis->keys('*'));
+
+        if ($count != $expectedCount) {
+            throw new \RuntimeException('Expecting redis to contain ' . $expectedCount. ' items, but found '.$count);
+        }
     }
 
     /**

@@ -104,4 +104,9 @@ class NullCache extends TaggableCache
     {
         return null;
     }
+
+    public function deleteByPrefix($prefix)
+    {
+        return null;
+    }
 }

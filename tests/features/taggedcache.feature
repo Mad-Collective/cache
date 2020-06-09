@@ -32,7 +32,9 @@ Feature: Using a taggable as cache backend
     Then I should get as value "nontagValue"
 
   Scenario: I can flush tagged keys
-    Given I create a tag
+    Given I flush all the items from the cache
+    And I create a tag
     And I store an item in the cache
     When I flush all the items from the cache
     Then I should not be able to retrieve it
+    And redis should contain 1 item
