@@ -188,4 +188,17 @@ class ChainCache extends TaggableCache
             $this->caches[$index]->set($key, $item, $timeToLive);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteByPrefix($prefix)
+    {
+        $deleted = 0;
+        foreach ($this->caches as $cache) {
+            $deleted += $cache->deleteByPrefix($prefix);
+        }
+
+        return $deleted;
+    }
 }

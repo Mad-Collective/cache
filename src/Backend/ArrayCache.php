@@ -165,4 +165,16 @@ class ArrayCache extends TaggableCache
 
         return !$this->items[$key]['expireTime'] ? null : $this->items[$key]['expireTime'] - time();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function deleteByPrefix($prefix)
+    {
+        foreach($this->items as $key => $item){
+            if (strpos($key, $prefix) === 0) {
+                unset($this->items[$key]);
+            }
+        }
+    }
 }

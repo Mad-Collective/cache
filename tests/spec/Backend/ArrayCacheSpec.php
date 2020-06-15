@@ -135,4 +135,18 @@ class ArrayCacheSpec extends ObjectBehavior
         $this->increment('foo')->shouldReturn(true);
         Assert::eq($this->get('foo')->getWrappedObject(),2);
     }
+
+    public function it_can_delete_by_prefix()
+    {
+        $this->set('prefix-something1', 1);
+        $this->set('prefix-something2', 1);
+        $this->set('something3', 1);
+
+        $this->deleteByPrefix('prefix');
+
+        $this->get('prefix-something1')->shouldReturn(null);
+        $this->get('prefix-something2')->shouldReturn(null);
+        $this->get('something3')->shouldReturn(1);
+
+    }
 }

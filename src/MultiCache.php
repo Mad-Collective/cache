@@ -38,4 +38,12 @@ interface MultiCache
      * @return bool
      */
     public function deleteItems(array $keys);
+
+    /**
+     * Deletes items matching the supplied prefix
+     *
+     * @param string $prefix
+     * @return int The number of items deleted
+     */
+    public function deleteByPrefix($prefix);
 }
