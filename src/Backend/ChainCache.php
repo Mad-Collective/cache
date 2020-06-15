@@ -194,8 +194,11 @@ class ChainCache extends TaggableCache
      */
     public function deleteByPrefix($prefix)
     {
+        $deleted = 0;
         foreach ($this->caches as $cache) {
-            $cache->deleteByPrefix($prefix);
+            $deleted += $cache->deleteByPrefix($prefix);
         }
+
+        return $deleted;
     }
 }

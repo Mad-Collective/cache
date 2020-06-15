@@ -153,7 +153,7 @@ class TaggedCache implements Cache
     public function deleteByPrefix($prefix)
     {
         $prefix = $this->getTagKey();
-        $this->store->deleteByPrefix($prefix);
+        return $this->store->deleteByPrefix($prefix);
     }
 
     /**

@@ -167,11 +167,14 @@ class RedisCache extends TaggableCache
      */
     public function deleteByPrefix($prefix)
     {
+        $deleted = 0;
         $iterator = null;
         while ($keys = $this->client->scan($iterator, $prefix.'*') ) {
             foreach ($keys as $key) {
-                $this->client->del($key);
+                $deleted += $this->client->del($key);
             }
         }
+
+        return $deleted;
     }
 }
